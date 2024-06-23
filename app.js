@@ -28,6 +28,23 @@ app.get('/', (req, res) => {
     res.render('signin');
 });
 
+app.get('/batch', (req, res) => {
+    res.render('batch');
+});
+
+app.get('/home', (req, res) => {
+    res.render('homepage');
+});
+app.get('/about', (req, res) => {
+    res.render('about');
+});
+app.get('/society', (req, res) => {
+    res.render('society');
+});
+
+
+
+
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
