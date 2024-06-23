@@ -10,18 +10,6 @@
 </head>
 
 <body>
-	<script>
-		// Initialize Firebase
-		var config = {
-		  apiKey: "YOUR_API_KEY",
-		  authDomain: "YOUR_AUTH_DOMAIN",
-		  databaseURL: "YOUR_DATABASE_URL",
-		  projectId: "YOUR_PROJECT_ID",
-		  storageBucket: "YOUR_STORAGE_BUCKET",
-		  messagingSenderId: "YOUR_MESSAGING_SENDER_ID"
-		};
-		firebase.initializeApp(config);
-	  </script>	
 	<div class="container">
 		<div class="forms-container">
 			<div class="signin-signup">
@@ -38,7 +26,7 @@
 					<input type="submit" value="Login" class="btn solid" />
 					<p class="social-text">Or Sign in with social platforms</p>
 
-					<button type="button" class="login-with-google-btn" onclick="login()">
+					<button type="button" class="login-with-google-btn" href="/auth/google" role="button">
 						Sign in with Google
 					</button>
 				</form>
@@ -64,7 +52,7 @@
 
 					<input type="submit" class="btn" value="Sign up" />
 					<p class="social-text">Or Sign up with social platforms</p>
-					<button type="button" class="login-with-google-btn" onclick="login()">
+					<button type="button" class="login-with-google-btn" href="/auth/google"  role="button">
 						Sign up with Google
 					</button>
 				</form>
@@ -101,26 +89,6 @@
 	</div>
 
 	<script src="signin.js"></script>
-	<script>
-		function login() {
-  var provider = new firebase.auth.GoogleAuthProvider();
-
-  firebase.auth().signInWithPopup(provider).then(function(result) {
-    // The user is now signed in
-    var user = result.user;
-
-    // Display the user's name and email address
-    document.getElementById('name').innerHTML = user.displayName;
-    document.getElementById('email').innerHTML = user.email;
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-
-    console.log(errorCode, errorMessage);
-  });
-}
-	</script>
 </body>
 
 </html>
