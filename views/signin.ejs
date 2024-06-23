@@ -10,6 +10,18 @@
 </head>
 
 <body>
+	<script>
+		// Initialize Firebase
+		var config = {
+		  apiKey: "YOUR_API_KEY",
+		  authDomain: "YOUR_AUTH_DOMAIN",
+		  databaseURL: "YOUR_DATABASE_URL",
+		  projectId: "YOUR_PROJECT_ID",
+		  storageBucket: "YOUR_STORAGE_BUCKET",
+		  messagingSenderId: "YOUR_MESSAGING_SENDER_ID"
+		};
+		firebase.initializeApp(config);
+	  </script>	
 	<div class="container">
 		<div class="forms-container">
 			<div class="signin-signup">
@@ -25,35 +37,36 @@
 					</div>
 					<input type="submit" value="Login" class="btn solid" />
 					<p class="social-text">Or Sign in with social platforms</p>
-					
-<button type="button" class="login-with-google-btn" >
-	Sign in with Google
-  </button>
+
+					<button type="button" class="login-with-google-btn" onclick="login()">
+						Sign in with Google
+					</button>
 				</form>
 				<form action="/login" method="POST" class="sign-up-form">
 					<h2 class="title">Sign up</h2>
 					<div class="input-field">
 						<i class="fas fa-user"></i>
 						<input type="text" placeholder="Full Name" required />
-					  </div>
+					</div>
 					<div class="input-field">
 						<i class="fas fa-id-badge"></i>
-						<input type="text" placeholder="Roll ID (b52XXXX)" id="roll-id-sign-up" pattern="b52[0-9]{4}" title="Roll ID should be in the format b52XXXX" required />
-					  </div>
-					  <div class="input-field">
+						<input type="text" placeholder="Roll ID (b52XXXX)" id="roll-id-sign-up" pattern="b52[0-9]{4}"
+							title="Roll ID should be in the format b52XXXX" required />
+					</div>
+					<div class="input-field">
 						<i class="fas fa-envelope"></i>
 						<input type="email" placeholder="Email" required />
-					  </div>
-					  <div class="input-field">
+					</div>
+					<div class="input-field">
 						<i class="fas fa-lock"></i>
 						<input type="password" placeholder="Password" required />
-					  </div>
-			
+					</div>
+
 					<input type="submit" class="btn" value="Sign up" />
 					<p class="social-text">Or Sign up with social platforms</p>
-					<button type="button" class="login-with-google-btn" >
+					<button type="button" class="login-with-google-btn" onclick="login()">
 						Sign up with Google
-					  </button>
+					</button>
 				</form>
 			</div>
 		</div>
@@ -69,25 +82,45 @@
 						Sign up
 					</button>
 				</div>
-				<img  src="https://i.ibb.co/6HXL6q1/Privacy-policy-rafiki.png" class="image" alt="" />
+				<img src="https://i.ibb.co/6HXL6q1/Privacy-policy-rafiki.png" class="image" alt="" />
 			</div>
 			<div class="panel right-panel">
 				<div class="content">
 					<h3>Welcome to CE Bootcamp!!!.</h3>
 					<p>
 						Thank you for being part of our community. Your presence enriches our
-          shared experiences. Let's continue this journey together!
+						shared experiences. Let's continue this journey together!
 					</p>
 					<button class="btn transparent" id="sign-in-btn">
 						Sign in
 					</button>
 				</div>
-				<img src="https://i.ibb.co/nP8H853/Mobile-login-rafiki.png"  class="image" alt="" />
+				<img src="https://i.ibb.co/nP8H853/Mobile-login-rafiki.png" class="image" alt="" />
 			</div>
 		</div>
 	</div>
 
 	<script src="signin.js"></script>
+	<script>
+		function login() {
+  var provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth().signInWithPopup(provider).then(function(result) {
+    // The user is now signed in
+    var user = result.user;
+
+    // Display the user's name and email address
+    document.getElementById('name').innerHTML = user.displayName;
+    document.getElementById('email').innerHTML = user.email;
+  }).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+    console.log(errorCode, errorMessage);
+  });
+}
+	</script>
 </body>
 
 </html>
