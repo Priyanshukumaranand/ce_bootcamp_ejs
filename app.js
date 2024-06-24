@@ -15,26 +15,27 @@ const app = express();
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true
 }));
 
 app.use(session({
-    secret: "Our little secret.",
-    resave: false,
-    saveUninitialized: false
+  secret: "Our little secret.",
+  resave: false,
+  saveUninitialized: false
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect("mongodb+srv://admin-priyanshu:Ufm3kPz1qvDEoZw6@cluster0.9umcloi.mongodb.net", {useNewUrlParser: true});
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: false});
+
 mongoose.set("useCreateIndex", true);
 
-const userSchema = new mongoose.Schema({
-    email: String,
-    password: String,
-    googleId: String,
-    secret: String
+const userSchema = new mongoose.Schema ({
+  email: String,
+  password: String,
+  googleId: String,
+  secret: String
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -44,52 +45,140 @@ const User = new mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function (user, done) {
-    done(null, user.id);
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
-        done(err, user);
-    });
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/google/homepage",
+    callbackURL: "http://localhost:3000/auth/google/home",
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
-},
-    function (accessToken, refreshToken, profile, cb) {
-        console.log(profile);
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
 
-        User.findOrCreate({ googleId: profile.id }, function (err, user) {
-            return cb(err, user);
-        });
-    }
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
 ));
-app.get("/", function (req, res) {
-    res.render("signin");
+
+app.get("/", function(req, res){
+  res.render("signin");
 });
 
 app.get("/auth/google",
-    passport.authenticate('google', { scope: ["profile"] })
+  passport.authenticate('google', { scope: ["profile"] })
 );
-app.get("/auth/google/homepage",
-    passport.authenticate('google', { failureRedirect: "signin" }),
-    function (req, res) {
-        // Successful authentication, redirect to secrets.
-        res.redirect("homepage");
-    });
 
-app.get("/submit", function (req, res) {
-    if (req.isAuthenticated()) {
-        res.render("homepage");
-    } else {
-        res.redirect("about");
-    }
-});
-app.listen(3000, function() {
-    console.log("Server started on port 3000.");
+app.get("/auth/google/home",
+  passport.authenticate('google', { failureRedirect: "/signin" }),
+  function(req, res) {
+    // Successful authentication, redirect to secrets.
+    res.redirect("/homepage");
   });
-  
+
+// app.get("/login", function(req, res){
+//   res.render("login");
+// });
+
+// app.get("/register", function(req, res){
+//   res.render("register");
+// });
+
+// app.get("/home", function(req, res){
+//   User.find({"home": {$ne: null}}, function(err, foundUsers){
+//     if (err){
+//       console.log(err);
+//     } else {
+//       if (foundUsers) {
+//         res.render("home", {usersWithSecrets: foundUsers});
+// res.render("home")
+//       }
+//     }
+//   });
+// });
+
+// app.get("/submit", function(req, res){
+//   if (req.isAuthenticated()){
+//     res.render("home");
+//   } else {
+//     res.redirect("/login");
+//   }
+// });
+
+// app.post("/submit", function(req, res){
+//   const submittedSecret = req.body.secret;
+
+//Once the user is authenticated and their session gets saved, their user details are saved to req.user.
+  // console.log(req.user.id);
+
+//   User.findById(req.user.id, function(err, foundUser){
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       if (foundUser) {
+//         foundUser.secret = submittedSecret;
+//         foundUser.save(function(){
+//           res.redirect("/secrets");
+//         });
+//       }
+//     }
+//   });
+// });
+
+// app.get("/logout", function(req, res){
+//   req.logout();
+//   res.redirect("/");
+// });
+
+// app.post("/register", function(req, res){
+
+//   User.register({username: req.body.username}, req.body.password, function(err, user){
+//     if (err) {
+//       console.log(err);
+//       res.redirect("/register");
+//     } else {
+//       passport.authenticate("local")(req, res, function(){
+//         res.redirect("/secrets");
+//       });
+//     }
+//   });
+
+// });
+
+// app.post("/login", function(req, res){
+
+//   const user = new User({
+//     username: req.body.username,
+//     password: req.body.password
+//   });
+
+//   req.login(user, function(err){
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       passport.authenticate("local")(req, res, function(){
+//         res.redirect("/homepage");
+//       });
+//     }
+//   });
+
+// });
+
+
+
+
+
+
+
+app.listen(3000, function() {
+  console.log("Server started on port 3000.");
+});
