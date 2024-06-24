@@ -1,4 +1,3 @@
-//jshint esversion:6
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -27,11 +26,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: false});
+mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true});
 
 mongoose.set("useCreateIndex", true);
 
-const userSchema = new mongoose.Schema ({
+const userSchema = new mongoose.Schema({
   email: String,
   password: String,
   googleId: String,
@@ -62,15 +61,14 @@ passport.use(new GoogleStrategy({
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, cb) {
-    console.log(profile);
-
+    // Error here
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
       return cb(err, user);
     });
   }
 ));
 
-app.get("/", function(req, res){
+app.get("/", function(req, res) {
   res.render("signin");
 });
 
@@ -82,96 +80,97 @@ app.get("/auth/google/home",
   passport.authenticate('google', { failureRedirect: "/signin" }),
   function(req, res) {
     // Successful authentication, redirect to secrets.
-    res.redirect("/homepage");
+    
+    res.redirect("/form");
   });
 
-// app.get("/login", function(req, res){
-//   res.render("login");
-// });
+app.get("/home", function(req, res){
+  res.render("homepage");
+});
 
-// app.get("/register", function(req, res){
-//   res.render("register");
-// });
+app.get("/form", function(req, res){
+  res.render("form");
+});
 
-// app.get("/home", function(req, res){
-//   User.find({"home": {$ne: null}}, function(err, foundUsers){
-//     if (err){
-//       console.log(err);
-//     } else {
-//       if (foundUsers) {
-//         res.render("home", {usersWithSecrets: foundUsers});
-// res.render("home")
-//       }
-//     }
-//   });
-// });
+app.get("/home", function(req, res){
+  User.find({"home": {$ne: null}}, function(err, foundUsers){
+    if (err){
+      console.log(err);
+    } else {
+      if (foundUsers) {
+        res.render("home", {usersWithSecrets: foundUsers});
+res.render("home")
+      }
+    }
+  });
+});
 
-// app.get("/submit", function(req, res){
-//   if (req.isAuthenticated()){
-//     res.render("home");
-//   } else {
-//     res.redirect("/login");
-//   }
-// });
+app.get("/submit", function(req, res){
+  if (req.isAuthenticated()){
+    res.render("home");
+  } else {
+    res.redirect("/login");
+  }
+});
 
-// app.post("/submit", function(req, res){
-//   const submittedSecret = req.body.secret;
+app.post("/submit", function(req, res){
+  const submittedSecret = req.body.secret;
 
 //Once the user is authenticated and their session gets saved, their user details are saved to req.user.
   // console.log(req.user.id);
 
-//   User.findById(req.user.id, function(err, foundUser){
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       if (foundUser) {
-//         foundUser.secret = submittedSecret;
-//         foundUser.save(function(){
-//           res.redirect("/secrets");
-//         });
-//       }
-//     }
-//   });
-// });
+  User.findById(req.user.id, function(err, foundUser){
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        foundUser.secret = submittedSecret;
+        foundUser.save(function(){
+          res.redirect("/secrets");
+        });
+      }
+    }
+  });
+});
 
-// app.get("/logout", function(req, res){
-//   req.logout();
-//   res.redirect("/");
-// });
+app.get("/logout", function(req, res){
+  req.logout();
+  res.redirect("/");
+});
 
-// app.post("/register", function(req, res){
+app.post("/register", function(req, res){
 
-//   User.register({username: req.body.username}, req.body.password, function(err, user){
-//     if (err) {
-//       console.log(err);
-//       res.redirect("/register");
-//     } else {
-//       passport.authenticate("local")(req, res, function(){
-//         res.redirect("/secrets");
-//       });
-//     }
-//   });
+  User.register({username: req.body.username}, req.body.password, function(err, user){
+    if (err) {
+      console.log(err);
+      res.redirect("/register");
+    } else {
+      passport.authenticate("local")(req, res, function(){
+        res.redirect("/secrets");
+      });
+    }
+  });
 
-// });
+});
 
-// app.post("/login", function(req, res){
+app.post("/login", function(req, res){
 
-//   const user = new User({
-//     username: req.body.username,
-//     password: req.body.password
-//   });
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password
+  });
 
-//   req.login(user, function(err){
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       passport.authenticate("local")(req, res, function(){
-//         res.redirect("/homepage");
-//       });
-//     }
-//   });
+  req.login(user, function(err){
+    if (err) {
+      console.log(err);
+    } else {
+      passport.authenticate("local")(req, res, function(){
+        res.redirect("/homepage");
+      });
+    }
+  });
 
-// });
+});
 
 
 
