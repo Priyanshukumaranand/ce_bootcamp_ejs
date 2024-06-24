@@ -54,13 +54,13 @@ router.post('/signup', async (req, res) => {
 
 
 
-router.post('/signin', async (req, res) => {
+router.post('/login', async (req, res) => {
      
     const { email, password } = req.body;
 
     try {
         // Check if the email exists
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findOne({ email:req.body.email });
 
         if (!existingUser) {
             // Email not found, redirect to an error page
@@ -69,10 +69,11 @@ router.post('/signin', async (req, res) => {
             return; // Exit early
         }
 
-        // Verify password
-        const isPasswordValid = existingUser.comparePassword(password);
 
-        if (!isPasswordValid) {
+        // Verify password
+        // const isPasswordValid = existingUser.comparePassword(password);
+
+        if (existingUser.password!=password) {
             // Incorrect password, redirect to an error page
             // res.redirect('/signin-error');
             res.send("Password does not match")
