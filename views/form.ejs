@@ -29,9 +29,9 @@
         <div id="alertMessage" class="alert-message"></div>
 
         <h1>Edit Profile</h1>
-        <form id="profileForm">
+        <form id="profileForm" method="POST">
             <div class="form-group">
-                <label for="profilePicture" id="profile_pic">Profile Picture</label>
+                <label for="profilePicture" id="profile_pic" name="img">Profile Picture</label>
                 <div class="upload-container" id="uploadContainer">
                     <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
                     <img id="profileImage" src="https://robohash.org/random" alt="Profile Picture" class="profile-img">
@@ -66,9 +66,9 @@
                 <label for="github">GitHub</label>
                 <input type="url" id="github" name="github" placeholder="https://github.com/yourprofile">
             </div>
-            <button type="submit">Save Changes</button>
+            <button type="submit" >Save Changes</button>
         </form>
     </div>
-    <script src="from.js"></script>
+    <!-- <script src="form.js"></script> -->
 </body>
 </html>
