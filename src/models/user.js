@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const { type } = require("os");
 
 
 const userSchema = new mongoose.Schema({
@@ -26,6 +27,15 @@ const userSchema = new mongoose.Schema({
     type:Date,
     required:true,
     default:Date.now,
+  },
+  // is_admin:{
+  //   type:Number,
+  //   required:true,
+  //   default:0,
+  // }
+  is_verified:{
+    type:Number,
+    default:0,
   }
 });
 

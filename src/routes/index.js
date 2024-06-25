@@ -4,21 +4,26 @@ const verifyToken = require('../middleware');
 const PostsController = require('../controllers/post-controller');
 const User=require('../models/user');
 const multer=require('multer');
+const userController=require('../controllers/usercontroller');
+const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 
-var storage=multer.diskStorage({
-    destination:function(req,file,cd){
-        cd(null,'./uploads');
-    },
-    filename:function(req,file,cd){
-        CSSLayerBlockRule(null,file.fieldname+"_"+Date.now()+"_"+file.originalname);
-    },
-});
 
-var upload = multer({
-    storage:storage
-})
+// var storage=multer.diskStorage({
+//     destination:function(req,file,cd){
+//         cd(null,'./uploads');
+//     },
+//     filename:function(req,file,cd){
+//         CSSLayerBlockRule(null,file.fieldname+"_"+Date.now()+"_"+file.originalname);
+//     },
+// });
+
+// var upload = multer({
+//     storage:storage
+// })
 
 const firebaseAuthController = require('../controllers/firebase-auth-controller');
+const user = require('../models/user');
 
 router.post('/api/register', firebaseAuthController.registerUser);
 router.post('/api/login', firebaseAuthController.loginUser);
@@ -36,7 +41,8 @@ router.post('/signup', async (req, res) => {
             email: req.body.email,
             password: req.body.password,
         });
-        await user.save(); // Use await with save()
+        const userData=await user.save(); // Use await with save()
+
 
         req.session.message = {
             type: 'success',
@@ -57,6 +63,7 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
      
     const { email, password } = req.body;
+    
 
     try {
         // Check if the email exists
@@ -80,6 +87,15 @@ router.post('/login', async (req, res) => {
             return; // Exit early
         }
 
+        const token = jwt.sign(
+            { name: existingUser.name, email: existingUser.email },
+            process.env.JWT_SECRET, // Replace with your actual secret key
+            { expiresIn: '1h' } // Token expiration time
+        );
+        user.token=token;
+        user.password=undefined;
+        res.cookie('jwt', token, { httpOnly: true });
+
         // Credentials match, redirect to /home
         res.redirect('/home');
     } catch (err) {
@@ -89,12 +105,12 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// router.get('/verify',userController.verifyMail);
 
 
-
-router.get('/users',(req,res)=>{
-    res.send("All Users")
-});
+// router.get('/users',(req,res)=>{
+//     res.send("All Users")
+// });
 
 router.get('/home', (req, res) => {
     res.render('homepage');
@@ -110,6 +126,15 @@ router.get('/about', (req, res) => {
 });
 router.get('/society', (req, res) => {
     res.render('society');
+});
+router.get('/form',auth,async (req, res) => {
+    try{
+        const user = await User.findOne({ _id: req.user._id });
+        res.render('form', { user });
+    }catch(error){
+        console.error('Error fetching user data:', error);
+        res.status(500).send('Internal server error');
+    }
 });
 
 
