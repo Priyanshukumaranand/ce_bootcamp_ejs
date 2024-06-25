@@ -58,10 +58,10 @@ const verifyMail=async(req,res)=>{
 
 const loadUser=async(req,res)=>{
     try{
-        const email=req.user.email;
-        const data=await User.findOne({email});
-
-        console.log(data);
+        const data=req.user;
+        const userdata=await User.findOne({data});
+        res.status(200).render('form.ejs', { userdata });
+        console.log(userdata);
     }
     catch(error){
         console.log(error);

@@ -44,30 +44,31 @@
             </div>
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name"  required>
+                <input type="text" id="name" name="name" value="<%= userdata.name %>"  required>
             </div>
             <div class="form-group">
                 <label for="place">Place</label>
-                <input type="text" id="place" name="place" required>
+                <input type="text" id="place" name="place" value="<%= userdata.place %>" required>
             </div>
             <div class="form-group">
                 <label for="description">About Me</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
+                <textarea id="description" name="description" value="<%= userdata.about %>" rows="4" required></textarea>
             </div>
             <div class="form-group">
                 <label for="instagram">Instagram</label>
-                <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/yourprofile">
+                <input type="url" id="instagram" name="instagram" value="<%= userdata.instagram %>" placeholder="https://instagram.com/yourprofile">
             </div>
             <div class="form-group">
                 <label for="linkedin">LinkedIn</label>
-                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                <input type="url" id="linkedin" name="linkedin" value="<%= userdata.linkedin %>" placeholder="https://linkedin.com/in/yourprofile">
             </div>
             <div class="form-group">
                 <label for="github">GitHub</label>
-                <input type="url" id="github" name="github" placeholder="https://github.com/yourprofile">
+                <input type="url" id="github" name="github" value="<%= userdata.github %>" placeholder="https://github.com/yourprofile">
             </div>
             <button type="submit">Save Changes</button>
         </form>
+
     </div>
     <script src="from.js"></script>
 </body>

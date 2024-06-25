@@ -291,6 +291,12 @@ main {
     flex-wrap: wrap;
     justify-content: center;
 }
+.cards-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+}
 
 .card {
     width: 300px;

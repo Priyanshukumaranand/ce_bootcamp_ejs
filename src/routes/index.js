@@ -143,7 +143,10 @@ router.post('/login', async(req, res) => {
         const token = generateToken(payload);
 
         // resturn token as response
-        res.json({token});
+        // res.json({token});
+        res.status(200).json({ token });
+
+
         // res.redirect('/home');
     }catch(err){
         console.error(err);
@@ -157,9 +160,9 @@ router.get('/home', (req, res) => {
     res.render('homepage');
 });
 
-router.get('/batch', (req, res) => {
-    res.render('batch');
-});
+// router.get('/batch', (req, res) => {
+//     res.render('batch');
+// });
 
 
 router.get('/about', (req, res) => {
@@ -169,35 +172,55 @@ router.get('/society', (req, res) => {
     res.render('society');
 });
 
+router.route("/testing").get(userController.loadUser);
+
 router.get('/form', jwtAuthMiddleware, async (req, res) => {
     try{
-        const userData = req.user;
-        console.log("User Data: ", userData);
+        // const userData = req.user;
+        // console.log("User Data: ", userData);
 
-        const userId = userData.id;
-        const user = await Person.findById(userId);
+        // const userId = userData.id;
+        // const user = await Person.findById(userId);
 
-        res.status(200).json({user});
+        // res.status(200).json({user});
+        const user=req.user;
+        const email=user.email;
+        const details=await User.findOne({email});
+        console.log(details);
+        
+        res.render('form', {
+            user: {
+              name: user.name,
+              place: user.place,
+              description: user.description,
+              instagram: user.instagram,
+              linkedin: user.linkedin,
+              github: user.github,
+            //   profilePicture: user.profilePicture // Assuming you have a profilePicture field in the user data
+            }
+          });
+
+
+
     }catch(err){
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 })
 
+router.get('/batch', async (req, res) => {
+    try {
+        const users = await User.find(); // Fetch all users from MongoDB
+        console.log(users);
+        res.render('batch.ejs', { users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
-// router.get('/form',auth,async (req, res) => {
-//     try{
-//         const user = await User.findOne({ _id: req.user._id });
-//         res.render('form', { user });
-//     }catch(error){
-//         console.error('Error fetching user data:', error);
-//         res.status(500).send('Internal server error');
-//     }
-// });
-// router.get('/form',async(req,res)=>{
-//     res.render('form');
-// })
+
 
 // router.get('/api/posts', verifyToken, PostsController.getPosts);
 module.exports = router;

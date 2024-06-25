@@ -40,10 +40,10 @@ const userSchema = new mongoose.Schema({
   place:{
     type:String,
   },
-  About:{
+  about:{
     type:String
   },
-  insta:{
+  instagram:{
     type:String
   },
   linkedin:{

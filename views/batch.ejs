@@ -68,7 +68,7 @@
 
     <main>
 
-        <div class="container">
+        <!-- <div class="container">
             <div class="card">
                 <div class="cardface front">
                     <div class="image">
@@ -96,20 +96,9 @@
                     </div>
                 </div>
                 <div class="cardface back">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo exercitationem commodi facilis
-                        quis unde dignissimos molestiae tenetur qui necessitatibus in nulla quos deserunt eaque
-                        dolore rerum porro officia nostrum fugit, eos quaerat repellendus eius accusamus cupiditate.
-                        Recusandae culpa incidunt esse, provident aperiam similique. Sint enim est iusto
-                        consectetur, molestias blanditiis.</p>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Corporis, ea..</p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus tenetur doloremque
-                        voluptatibus, sed nisi placeat sapiente id. Accusantium deleniti sed culpa aperiam illum
-                        corporis ea suscipit cumque, est earum beatae animi quasi dolore magnam voluptate non
-                        nesciunt, temporibus eius magni delectus praesentium? Iure excepturi quod minus nemo
-                        pariatur fugit ipsa impedit? Illum ducimus corrupti sunt ut eligendi perferendis harum
-                        provident, aut quo ipsum optio fuga ex dolore. Iste, ab molestias laudantium enim adipisci
-                        quas tenetur soluta explicabo repudiandae aperiam reiciendis a reprehenderit exercitationem
-                        consectetur? Nihil reiciendis assumenda blanditiis quia earum iure qui eum repellat magni
-                        esse aliquid eaque, dignissimos tempora?</p>
+                        </p>
                 </div>
             </div>
 
@@ -489,8 +478,44 @@
                 </div>
                 <div class="cardface back"></div>
             </div>
+        </div> -->
+        
+        <div class="cards-container">
+            <% users.forEach((user) => { %>
+                <div class="card">
+                    <div class="cardface front">
+                        <div class="image">
+                            <img src="images/RGimg.webp" alt="">
+                        </div>
+                        <div class="info">
+                            <div class="text">
+                                <h1><%= user.name %></h1>
+                                <h3><%= user.collegeId %></h3>>
+                            </div>
+                            <div class="links">
+                                <div class="link instagram">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </div>
+                                <div class="link github">
+                                    <i class="fa-brands fa-github"></i>
+                                </div>
+                                <div class="link linkedin">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                </div>
+                                <div class="link mail">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardface back">
+                        <p><%= user.about %></p>
+                        
+                    </div>
+                </div>
+            <% }) %>
+    
         </div>
-
     </main>
 
     <footer>
