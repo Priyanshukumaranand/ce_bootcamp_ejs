@@ -31,43 +31,43 @@
         <h1>Edit Profile</h1>
         <form id="profileForm">
             <div class="form-group">
-                <label for="profilePicture" id="profile_pic">Profile Picture</label>
-                <div class="upload-container" id="uploadContainer">
-                    <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
-                    <img id="profileImage" src="https://robohash.org/random" alt="Profile Picture" class="profile-img">
-                    <p class="upload-instructions">Drag here to upload</p>
-                </div>
-                <div class="upload-options">
-                    <button type="button" id="browseButton">Browse Image</button>
-                    <button type="button" id="saveImageButton" hidden>Save Image</button>
-                </div>
+              <label for="profilePicture" id="profile_pic">Profile Picture</label>
+              <div class="upload-container" id="uploadContainer">
+                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
+                <img id="profileImage" src="https://robohash.org/random" alt="Profile Picture" class="profile-img">
+                <p class="upload-instructions">Drag here to upload</p>
+              </div>
+              <div class="upload-options">
+                <button type="button" id="browseButton">Browse Image</button>
+                <button type="button" id="saveImageButton" hidden>Save Image</button>
+              </div>
             </div>
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" value="<%= userdata.name %>"  required>
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" value="<%= user.name %>" required>
             </div>
             <div class="form-group">
-                <label for="place">Place</label>
-                <input type="text" id="place" name="place" value="<%= userdata.place %>" required>
+              <label for="place">Place</label>
+              <input type="text" id="place" name="place" value="<%= user.place %>" required>
             </div>
             <div class="form-group">
-                <label for="description">About Me</label>
-                <textarea id="description" name="description" value="<%= userdata.about %>" rows="4" required></textarea>
+              <label for="description">About Me</label>
+              <textarea id="description" name="description" rows="4" required><%= user.about %></textarea>
             </div>
             <div class="form-group">
-                <label for="instagram">Instagram</label>
-                <input type="url" id="instagram" name="instagram" value="<%= userdata.instagram %>" placeholder="https://instagram.com/yourprofile">
+              <label for="instagram">Instagram</label>
+              <input type="url" id="instagram" name="instagram" value="<%= user.instagram %>" placeholder="https://instagram.com/yourprofile">
             </div>
             <div class="form-group">
-                <label for="linkedin">LinkedIn</label>
-                <input type="url" id="linkedin" name="linkedin" value="<%= userdata.linkedin %>" placeholder="https://linkedin.com/in/yourprofile">
+              <label for="linkedin">LinkedIn</label>
+              <input type="url" id="linkedin" name="linkedin" value="<%= user.linkedin %>" placeholder="https://linkedin.com/in/yourprofile">
             </div>
             <div class="form-group">
-                <label for="github">GitHub</label>
-                <input type="url" id="github" name="github" value="<%= userdata.github %>" placeholder="https://github.com/yourprofile">
+              <label for="github">GitHub</label>
+              <input type="url" id="github" name="github" value="<%= user.github %>" placeholder="https://github.com/yourprofile">
             </div>
             <button type="submit">Save Changes</button>
-        </form>
+          </form>
 
     </div>
     <script src="from.js"></script>

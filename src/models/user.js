@@ -51,6 +51,10 @@ const userSchema = new mongoose.Schema({
   },
   github:{
     type:String
+  },
+  profilePicture:{
+    type:String,
+    default:null,
   }
 });
 
