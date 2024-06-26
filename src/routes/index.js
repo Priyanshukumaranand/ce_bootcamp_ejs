@@ -28,6 +28,7 @@ router.post('/signup', async (req, res) =>{
         console.log('data saved');
 
         const payload = {
+            _id: response._id,
             collegeId: response.collegeId,
             email: response.email
         }
@@ -154,7 +155,8 @@ router.get('/form', jwtAuthMiddleware, async (req, res) => {
         const user=req.user;
         const email=user.email;
         const details=await User.findOne({email});
-        console.log(details);
+        // console.log(details);
+        // console.log(user);
         
         res.render('form', {
             user: {
@@ -174,7 +176,38 @@ router.get('/form', jwtAuthMiddleware, async (req, res) => {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
+
+router.post('/update-profile', jwtAuthMiddleware, async (req, res) => {
+    try {
+      const email = req.user.email; // Convert ObjectId to string
+      const { name, place, description, instagram, linkedin, github } = req.body;
+    //   console.log(userId);
+    //   console.log(req.user);
+      // Find the user by ID and update the profile information
+      const user = await User.findOne({email});
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      user.name = name;
+      user.place = place;
+      user.about = description;
+      user.instagram = instagram;
+      user.linkedin = linkedin;
+      user.github = github;
+  
+      await user.save();
+  
+    //   res.status(200).json({ message: 'Profile updated successfully', user });
+    res.redirect(`/form?email=${email}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
 
 router.get('/batch', async (req, res) => {
     try {

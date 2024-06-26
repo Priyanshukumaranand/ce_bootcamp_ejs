@@ -116,3 +116,41 @@ loginForm.addEventListener('submit', async (event) => {
     alert('An error occurred. Please try again later.');
   }
 });
+
+
+const profileForm = document.getElementById('profileForm');
+
+profileForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+
+  try {
+    const response = await fetch('/update-profile', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (response.ok) {
+      const { message, user } = await response.json();
+      console.log(message);
+      // Update the UI with the new user data
+      updateUserProfile(user);
+    } else {
+      const { error } = await response.json();
+      console.error(error);
+    }
+  } catch (error) {
+    console.error('Error updating profile:', error);
+  }
+});
+
+function updateUserProfile(user) {
+  // Update the UI with the new user data
+  document.getElementById('name').value = user.name;
+  document.getElementById('place').value = user.place;
+  document.getElementById('description').value = user.about;
+  document.getElementById('instagram').value = user.instagram;
+  document.getElementById('linkedin').value = user.linkedin;
+  document.getElementById('github').value = user.github;
+}
