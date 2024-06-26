@@ -1,17 +1,14 @@
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
-const ejs = require("ejs");
 const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
-var fs = require('fs');
 var path = require('path');
 const app = express();
-var gid;
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
@@ -21,7 +18,9 @@ app.use(bodyParser.urlencoded({
 app.use(session({
   secret: "Our little secret.",
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: { secure: true }
+
 }));
 
 app.use(passport.initialize());
@@ -56,7 +55,7 @@ const User = new mongoose.model("User", userSchema);
 passport.use(User.createStrategy());
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+  done(null, {id:user._id,username:user.username,googleId:user.googleId});
 });
 
 passport.deserializeUser(function (id, done) {
@@ -71,7 +70,7 @@ const { profile } = require('console');
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads')
+    cb(null, 'uploads/')
   },
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '-' + Date.now())
@@ -88,9 +87,10 @@ passport.use(new GoogleStrategy({
 },
   function (accessToken, refreshToken, profile, cb) {
     // Error here
-    console.log(profile)
+    // req.session.user = profile;
+
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      gid = profile.id;
+     
       return cb(err, user);
     });
   }
@@ -106,27 +106,30 @@ app.get("/auth/google",
 
 app.get("/auth/google/home",
   passport.authenticate('google', { failureRedirect: "/signin" }),
-  function (req, res) {
+  function (req, res,next) {
     // Successful authentication, redirect to form.
-    
+    console.log(req.session.passport.user.googleId);
     res.redirect("/form");
   });
-//Form
+  //Form
+  
+  app.post('/form', upload.single('image'), (req, res, next) => {
+    // User.getCollection('users').find({ _id: User.id })
+    console.log(req.session);
 
-app.post('/form', upload.single('image'), (req, res, next) => {
-  // User.getCollection('users').find({ _id: User.id })
 
-
-  console.log(gid)
-  // img: {
-  //     data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-  //     contentType: 'image/png'
-  // }
-
-  const filter = { googleId: gid };
+  // console.log(req.session);
+  // passport.authenticate("local")(req, res, function () {
+    // res.redirect("/secrets");
+  // });
+  const filter = {googleId :  req.session.passport.user.googleId};
   User.updateOne(filter, {
     about_me: req.body.description,
     place: req.body.place,
+    // img: {
+    //     data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+    //     contentType: 'image/png'
+    // },
     username: req.body.name,
     instagram: req.body.instagram,
     linkedin: req.body.linkedin,
@@ -143,22 +146,7 @@ app.post('/form', upload.single('image'), (req, res, next) => {
     });
 });
 
-app.get("/home", function (req, res) {
-  res.render("homepage");
-});
 
-app.get("/form", function (req, res) {
-  res.render("form");
-});
-app.get("/about", function (req, res) {
-  res.render("about");
-});
-app.get("/society", function (req, res) {
-  res.render("society");
-});
-app.get("/batch", function (req, res) {
-  res.render("batch");
-});
 app.get("/home", function (req, res) {
   User.find({ "home": { $ne: null } }, function (err, foundUsers) {
     if (err) {
@@ -239,7 +227,22 @@ app.post("/login", function (req, res) {
 
 });
 
+app.get("/home", function (req, res) {
+  res.render("homepage");
+});
 
+app.get("/form", function (req, res) {
+  res.render("form");
+});
+app.get("/about", function (req, res) {
+  res.render("about");
+});
+app.get("/society", function (req, res) {
+  res.render("society");
+});
+app.get("/batch", function (req, res) {
+  res.render("batch");
+});
 app.listen(3000, function () {
   console.log("Server started on port 3000.");
 });
