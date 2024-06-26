@@ -8,6 +8,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/bootcamp_logo_wo_bg.png" alt="">
+            <p>Bootcamp</p>
+        </div>
+        <ul class="menu">
+            <li><a href="/home">HOME</a></li>
+            <li><a href="#">ABOUT</a></li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">BATCH</a>
+                <div class="dropdown-content">
+                    <a href="/batch">2026</a>
+                    <a href="#">2027</a>
+                    <a href="#">2028</a>
+                </div>
+            </li>
+            <li><a href="/society">SOCIETY</a></li>
+            <li><a href="/form">PROFILE</a></li>
+        </ul>
+        <div class="menu-btn">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </nav>
+
     <section class="about" id="about">
         <div class="about-us">
             <h1>ABOUT US</h1>
@@ -130,7 +155,11 @@
             </div>
             </div>
         </div>
-    </section>  
+    </section> 
+    
+    <footer>
+        <p>Made with <i class="fa-solid fa-heart"></i> by CE'26</p>
+    </footer>
     <script src="about.js"></script>
 </body>
 </html>
