@@ -7,25 +7,25 @@ const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const findOrCreate = require('mongoose-findorcreate');
-var path = require('path');
+const path = require('path');
+const multer = require('multer');
 const app = express();
+
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(session({
   secret: "Our little secret.",
   resave: true,
   saveUninitialized: false,
-  cookie: { secure: true }
-
+  cookie: { secure: false }
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({
@@ -39,8 +39,7 @@ const userSchema = new mongoose.Schema({
   github: String,
   googleId: String,
   secret: String,
-  img:
-  {
+  img: {
     data: Buffer,
     contentType: String
   }
@@ -49,34 +48,19 @@ const userSchema = new mongoose.Schema({
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 
-const User = new mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(function (user, done) {
-  done(null, { id: user._id, username: user.username, googleId: user.googleId });
+passport.serializeUser((user, done) => {
+  done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-  User.findById(id, function (err, user) {
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
     done(err, user);
   });
 });
-
-//IMG
-var multer = require('multer');
-const { profile } = require('console');
-
-var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/')
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
-});
-
-var upload = multer({ storage: storage });
 
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
@@ -84,87 +68,72 @@ passport.use(new GoogleStrategy({
   callbackURL: "http://localhost:3000/auth/google/home",
   userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
   scope: ['profile', 'email']
-},
-  function (accessToken, refreshToken,profile, cb) {
-    const email = profile.emails[0].value;
-    if (email.endsWith('@iiit-bh.ac.in') && email.startsWith('b5220')) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
-    } else {
-      // console.log( "cb(null, false, { message: 'Invalid email domain' })");
-      return cb(null, false, { message: 'Invalid email domain' });
-    }
+}, (accessToken, refreshToken, profile, cb) => {
+  const email = profile.emails[0].value;
+  if (email.endsWith('@iiit-bh.ac.in') && email.startsWith('b5220')) {
+    User.findOrCreate({ email: email, googleId: profile.id }, (err, user) => {
+      return cb(err, user);
+    });
+  } else {
+    return cb(null, false, { message: 'Invalid email domain' });
   }
-));
+}));
 
-app.get("/", function (req, res) {
+app.get("/", (req, res) => {
   res.render("signin");
 });
 
 app.get("/auth/google",
-  passport.authenticate('google', { scope: ["profile","email"] })
+  passport.authenticate('google', { scope: ["profile", "email"] })
 );
 
 app.get("/auth/google/home",
   passport.authenticate('google', { failureRedirect: "/" }),
-  function (req, res, next) {
-    // Successful authentication, redirect to form.
-    // console.log(req.session.passport.user.googleId);
-    res.redirect("/form");
-  });
-//Form
-
-app.post('/form',
-  passport.authenticate('local', { failureRedirect: '/', failureMessage: true }),
   (req, res) => {
-    // User.getCollection('users').find({ _id: User.id })
-    console.log(req.session.passport.user.googleId);
+    res.redirect("/form");
+  }
+);
 
-
-    // console.log(req.session);
-    // passport.authenticate("local")(req, res, function () {
-    // res.redirect("/secrets");
-    // });
-    const filter = { googleId: req.session.passport.user.googleId };
+app.post('/form', (req, res) => {
+  if (req.isAuthenticated()) {
+    console.log(req.session.passport.user);
+    const filter = {_id: req.session.passport.user };
     User.updateOne(filter, {
       about_me: req.body.description,
       place: req.body.place,
-      // img: {
-      //     data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-      //     contentType: 'image/png'
-      // },
       username: req.body.name,
       instagram: req.body.instagram,
       linkedin: req.body.linkedin,
       github: req.body.github
-    })
-      .then((item, err) => {
-        if (err) {
-          console.log(err);
-        }
-        else {
-          // item.save();
-          res.redirect('/home');
-        }
-      });
-  });
-
-
-app.get("/home", function (req, res) {
-  User.find({ "home": { $ne: null } }, function (err, foundUsers) {
-    if (err) {
-      console.log(err);
-    } else {
-      if (foundUsers) {
-        res.render("home", { usersWithSecrets: foundUsers });
-        res.render("homepage")
+    }).then((item, err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect('/home');
       }
-    }
-  });
+    });
+  } else {
+    res.redirect('/');
+  }
 });
 
-app.get("/submit", function (req, res) {
+app.get("/home", (req, res) => {
+  if (req.isAuthenticated()) {
+    User.find({ "home": { $ne: null } }, (err, foundUsers) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (foundUsers) {
+          res.render("homepage");
+        }
+      }
+    });
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get("/submit", (req, res) => {
   if (req.isAuthenticated()) {
     res.render("home");
   } else {
@@ -172,81 +141,94 @@ app.get("/submit", function (req, res) {
   }
 });
 
-app.post("/submit", function (req, res) {
-  const submittedSecret = req.body.secret;
+app.post("/submit", (req, res) => {
+  if (req.isAuthenticated()) {
+    const submittedSecret = req.body.secret;
 
-  //Once the user is authenticated and their session gets saved, their user details are saved to req.user.
-  // console.log(req.user.id);
-
-  User.findById(req.user.id, function (err, foundUser) {
-    if (err) {
-      console.log(err);
-    } else {
-      if (foundUser) {
-        foundUser.secret = submittedSecret;
-        foundUser.save(function () {
-          res.redirect("/secrets");
-        });
+    User.findById(req.user.id, (err, foundUser) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (foundUser) {
+          foundUser.secret = submittedSecret;
+          foundUser.save(() => {
+            res.redirect("/secrets");
+          });
+        }
       }
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
     }
+    res.redirect("/");
   });
 });
 
-app.get("/logout", function (req, res) {
-  req.logout();
-  res.redirect("/");
-});
-
-app.post("/register", function (req, res) {
-
-  User.register({ username: req.body.username }, req.body.password, function (err, user) {
+app.post("/register", (req, res) => {
+  User.register({ username: req.body.username }, req.body.password, (err, user) => {
     if (err) {
       console.log(err);
       res.redirect("/register");
     } else {
-      passport.authenticate("local")(req, res, function () {
+      passport.authenticate("local")(req, res, () => {
         res.redirect("/secrets");
       });
     }
   });
-
 });
 
-app.post("/login", function (req, res) {
-
+app.post("/login", (req, res) => {
   const user = new User({
     username: req.body.username,
     password: req.body.password
   });
 
-  req.login(user, function (err) {
+  req.login(user, (err) => {
     if (err) {
       console.log(err);
     } else {
-      passport.authenticate("local")(req, res, function () {
+      passport.authenticate("local")(req, res, () => {
         res.redirect("/homepage");
       });
     }
   });
-
 });
 
-app.get("/home", function (req, res) {
-  res.render("homepage");
+app.get("/home", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("homepage");
+  } else {
+    res.redirect('/');
+  }
 });
 
-app.get("/form", function (req, res) {
-  res.render("form");
+app.get("/form", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("form");
+  } else {
+    res.redirect('/');
+  }
 });
-app.get("/about", function (req, res) {
+
+app.get("/about", (req, res) => {
   res.render("about");
 });
-app.get("/society", function (req, res) {
+
+app.get("/society", (req, res) => {
   res.render("society");
 });
-app.get("/batch", function (req, res) {
+
+app.get("/batch", (req, res) => {
   res.render("batch");
 });
-app.listen(3000, function () {
+
+app.listen(3000, () => {
   console.log("Server started on port 3000.");
 });
