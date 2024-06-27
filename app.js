@@ -53,11 +53,11 @@ const User = mongoose.model("User", userSchema);
 passport.use(User.createStrategy());
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null,{ id: user.id, username: user.username, email: user.email });
 });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
+passport.deserializeUser((user, done) => {
+  User.findById(user.id, (err, user) => {
     done(err, user);
   });
 });
@@ -71,7 +71,8 @@ passport.use(new GoogleStrategy({
 }, (accessToken, refreshToken, profile, cb) => {
   const email = profile.emails[0].value;
   if (email.endsWith('@iiit-bh.ac.in') && email.startsWith('b5220')) {
-    User.findOrCreate({ email: email, googleId: profile.id }, (err, user) => {
+    // console.log(profile)
+    User.findOrCreate({ email: email, googleId: profile.id ,username:profile.displayName }, (err, user) => {
       return cb(err, user);
     });
   } else {
@@ -96,12 +97,13 @@ app.get("/auth/google/home",
 
 app.post('/form', (req, res) => {
   if (req.isAuthenticated()) {
-    console.log(req.session.passport.user);
-    const filter = {_id: req.session.passport.user };
+    console.log(req.session.passport);
+    const filter = {email: req.session.passport.user.email };
     User.updateOne(filter, {
+      
       about_me: req.body.description,
       place: req.body.place,
-      username: req.body.name,
+      // username: req.body.name,
       instagram: req.body.instagram,
       linkedin: req.body.linkedin,
       github: req.body.github
