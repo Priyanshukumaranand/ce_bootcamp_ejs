@@ -97,37 +97,7 @@ router.get('/users',(req,res)=>{
     res.send("All Users")
 });
 
-// router.post('/login', async(req, res) => {
-//     try{
-//         // Extract username and password from request body
-//         const {email, password} = req.body;
 
-//         // Find the user by username
-//         const user = await User.findOne({email: email});
-
-//         // If user does not exist or password does not match, return error
-//         if( !user || !(await user.comparePassword(password))){
-//             return res.status(401).json({error: 'Invalid username or password'});
-//         }
-
-//         // generate Token 
-//         const payload = {
-//             id: user.id,
-//             email: user.email
-//         }
-//         const token = generateToken(payload);
-
-//         // resturn token as response
-//         // res.json({token});
-//         res.status(200).json({ token });
-
-
-//         // res.redirect('/home');
-//     }catch(err){
-//         console.error(err);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
 
 
 
@@ -212,7 +182,7 @@ router.post('/update-profile', jwtAuthMiddleware, async (req, res) => {
 router.get('/batch', async (req, res) => {
     try {
         const users = await User.find(); // Fetch all users from MongoDB
-        console.log(users);
+        // console.log(users);
         res.render('batch.ejs', { users });
     } catch (error) {
         console.error(error);
