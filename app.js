@@ -142,8 +142,8 @@ app.post('/upload', (req, res) => {
             if (err) {
               console.log(err);
             } else {
-              console.log("r");
               res.send({ message: 'File uploaded!', file: `uploads/${req.file.filename}` });
+              console.log("r");
               // res.redirect('/home');
             }
           });
