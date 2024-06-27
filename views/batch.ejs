@@ -51,9 +51,9 @@
                 <li class="dropdown">
                     <a href="javascript:void(0)" class="dropbtn">BATCH</a>
                     <div class="dropdown-content">
-                        <a href="/batch"">2026</a>
-                        <a href="/batch"">2027</a>
-                        <a href="/batch"">2028</a>
+                        <a href="#">2026</a>
+                        <a href="#">2027</a>
+                        <a href="#">2028</a>
                     </div>
                 </li>
                 <li><a href="/society">SOCIETY</a></li>
@@ -68,82 +68,43 @@
 
     <main>
 
-        <div class="container">
-            <div class="card">
-                <div class="cardface front">
-                    <div class="image">
-                        <img src="images/RGimg.webp" alt="">
-                    </div>
-                    <div class="info">
-                        <div class="text">
-                            <h1>Saumyajeet Varma</h1>
-                            <h3>B522053</h3>
-                        </div>
-                        <div class="links">
-                            <div class="link instagram">
-                                <i class="fa-brands fa-instagram"></i>
-                            </div>
-                            <div class="link github">
-                                <i class="fa-brands fa-github"></i>
-                            </div>
-                            <div class="link linkedin">
-                                <i class="fa-brands fa-linkedin"></i>
-                            </div>
-                            <div class="link mail">
-                                <i class="fa-regular fa-envelope"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="cardface back">
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo exercitationem commodi facilis
-                        quis unde dignissimos molestiae tenetur qui necessitatibus in nulla quos deserunt eaque
-                        dolore rerum porro officia nostrum fugit, eos quaerat repellendus eius accusamus cupiditate.
-                        Recusandae culpa incidunt esse, provident aperiam similique. Sint enim est iusto
-                        consectetur, molestias blanditiis.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus tenetur doloremque
-                        voluptatibus, sed nisi placeat sapiente id. Accusantium deleniti sed culpa aperiam illum
-                        corporis ea suscipit cumque, est earum beatae animi quasi dolore magnam voluptate non
-                        nesciunt, temporibus eius magni delectus praesentium? Iure excepturi quod minus nemo
-                        pariatur fugit ipsa impedit? Illum ducimus corrupti sunt ut eligendi perferendis harum
-                        provident, aut quo ipsum optio fuga ex dolore. Iste, ab molestias laudantium enim adipisci
-                        quas tenetur soluta explicabo repudiandae aperiam reiciendis a reprehenderit exercitationem
-                        consectetur? Nihil reiciendis assumenda blanditiis quia earum iure qui eum repellat magni
-                        esse aliquid eaque, dignissimos tempora?</p>
-                </div>
-            </div>
 
-            <div class="card">
-                <div class="cardface front">
-                    <div class="image">
-                        <img src="images/cardimg1.jpg" alt="">
+        <div class="cards-container">
+            <% users.forEach((user) => { %>
+                <div class="card">
+                    <div class="cardface front">
+                        <div class="image">
+                            <img src="<%= user.img.data %>" alt="">
+                        </div>
+                        <div class="info">
+                            <div class="text">
+                                <h1><%= user.username %></h1>
+                                <h3><%= user.email %></h3>>
+                            </div>
+                            <div class="links">
+                                <div class="link instagram">
+                                    <a href= "<%= user.instagram %>" style="text-decoration:none"><i class="fa-brands fa-instagram"></i></a>
+                                </div>
+                                <div class="link github">
+                                    <a href=  "<%= user.github %>" style="text-decoration:none"> <i class="fa-brands fa-github" ></i></a>
+                                </div>
+                                <div class="link linkedin">
+                                    <a href=  "<%= user.linkedin %>" style="text-decoration:none"> <i class="fa-brands fa-linkedin" ></i></a>
+                                </div>
+                                <div class="link mail">
+                                    <a href=  "<%= user.email %>" style="text-decoration:none">  <i class="fa-regular fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="info">
-                        <div class="text">
-                            <h1>Saumyajeet Varma</h1>
-                            <h3>B522053</h3>
-                        </div>
-                        <div class="links">
-                            <div class="link instagram">
-                                <i class="fa-brands fa-instagram"></i>
-                            </div>
-                            <div class="link github">
-                                <i class="fa-brands fa-github"></i>
-                            </div>
-                            <div class="link linkedin">
-                                <i class="fa-brands fa-linkedin"></i>
-                            </div>
-                            <div class="link mail">
-                                <i class="fa-regular fa-envelope"></i>
-                            </div>
-                        </div>
+                    <div class="cardface back">
+                        <p><%= user.about_me %></p>
+                        
                     </div>
                 </div>
-                <div class="cardface back"></div>
-            </div>
-            
+            <% }) %>
+    
         </div>
-
     </main>
 
     <footer>

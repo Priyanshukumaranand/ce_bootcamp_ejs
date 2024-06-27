@@ -175,7 +175,7 @@ app.post('/form', (req, res) => {
       linkedin: req.body.linkedin,
       github: req.body.github
     }).then((err) => {
-      console.log("eret");
+      // console.log("eret");
       if (!err) {
         console.log(err);
       } else {
@@ -306,12 +306,20 @@ app.get("/society", (req, res) => {
 
 });
 
-app.get("/batch", (req, res) => {
+app.get("/batch", async(req, res) => {
   if (req.isAuthenticated()) {
-    res.render("batch");
-  } else {
+  try {
+    const users = await User.find(); // Fetch all users from MongoDB
+    console.log(users);
+    res.render('batch.ejs', { users });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
     res.redirect('/');
-  }
+}}
+else{
+  res.redirect('/');
+}
 
 });
 
