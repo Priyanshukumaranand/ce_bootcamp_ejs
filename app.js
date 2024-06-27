@@ -91,7 +91,7 @@ app.get("/auth/google",
 app.get("/auth/google/home",
   passport.authenticate('google', { failureRedirect: "/" }),
   (req, res) => {
-    res.redirect("/form");
+    res.redirect("/home");
   }
 );
 
@@ -220,15 +220,29 @@ app.get("/form", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-  res.render("about");
+  if (req.isAuthenticated()) {
+    res.render("about");
+  } else {
+    res.redirect('/');
+  }
 });
 
 app.get("/society", (req, res) => {
-  res.render("society");
+  if (req.isAuthenticated()) {
+    res.render("society");
+  } else {
+    res.redirect('/');
+  }
+ 
 });
 
 app.get("/batch", (req, res) => {
-  res.render("batch");
+  if (req.isAuthenticated()) {
+    res.render("batch");
+  } else {
+    res.redirect('/');
+  }
+ 
 });
 
 app.listen(3000, () => {

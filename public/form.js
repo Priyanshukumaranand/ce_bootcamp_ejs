@@ -45,22 +45,22 @@ document.getElementById('uploadContainer').addEventListener('drop', function(eve
         reader.readAsDataURL(file);
     }
 });
-document.getElementById('profileForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    // Here you can add your code to save the form data or perform any other actions
-    alert('Changes saved successfully!');
-});
+// document.getElementById('profileForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     // Here you can add your code to save the form data or perform any other actions
+//     alert('Changes saved successfully!');
+// });
 
-document.getElementById('profileForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    // Here you can add your code to save the form data or perform any other actions
-    const alertMessage = document.getElementById('alertMessage');
-    alertMessage.textContent = 'Changes saved successfully!';
-    alertMessage.classList.add('show');
-    setTimeout(function() {
-        alertMessage.classList.remove('show');
-    }, 3000); // Hide the alert after 3 seconds (3000 milliseconds)
-});
+// document.getElementById('profileForm').addEventListener('submit', function(event) {
+//     event.preventDefault();
+//     // Here you can add your code to save the form data or perform any other actions
+//     const alertMessage = document.getElementById('alertMessage');
+//     alertMessage.textContent = 'Changes saved successfully!';
+//     alertMessage.classList.add('show');
+//     setTimeout(function() {
+//         alertMessage.classList.remove('show');
+//     }, 3000); // Hide the alert after 3 seconds (3000 milliseconds)
+// });
 
 
 document.getElementById('profilePicture').addEventListener('change', function(event) {
