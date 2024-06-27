@@ -11,17 +11,18 @@ const path = require('path');
 const multer = require('multer');
 const app = express();
 var fs = require('fs');
+
 const storage = multer.diskStorage({
   destination: './uploads/',
   filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 });
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 }, // Limit file size to 1MB
   fileFilter: (req, file, cb) => {
-      checkFileType(file, cb);
+    checkFileType(file, cb);
   }
 }).single('profilePicture');
 
@@ -31,9 +32,9 @@ function checkFileType(file, cb) {
   const mimetype = filetypes.test(file.mimetype);
 
   if (mimetype && extname) {
-      return cb(null, true);
+    return cb(null, true);
   } else {
-      cb('Error: Images Only!');
+    cb('Error: Images Only!');
   }
 }
 
@@ -64,11 +65,11 @@ const userSchema = new mongoose.Schema({
   linkedin: String,
   github: String,
   googleId: String,
-  secret: String,
   img: {
     data: Buffer,
     contentType: String
-  }
+  },
+  secret: String
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -79,7 +80,7 @@ const User = mongoose.model("User", userSchema);
 passport.use(User.createStrategy());
 
 passport.serializeUser((user, done) => {
-  done(null,{ id: user.id, username: user.username, email: user.email });
+  done(null, { id: user.id, username: user.username, email: user.email });
 });
 
 passport.deserializeUser((user, done) => {
@@ -98,7 +99,7 @@ passport.use(new GoogleStrategy({
   const email = profile.emails[0].value;
   if (email.endsWith('@iiit-bh.ac.in') && email.startsWith('b5220')) {
     // console.log(profile)
-    User.findOrCreate({ email: email, googleId: profile.id ,username:profile.displayName }, (err, user) => {
+    User.findOrCreate({ email: email, googleId: profile.id, username: profile.displayName }, (err, user) => {
       return cb(err, user);
     });
   } else {
@@ -122,42 +123,52 @@ app.get("/auth/google/home",
 );
 
 app.post('/upload', (req, res) => {
-  upload(req, res, (err) => {
+  if (req.isAuthenticated()) {
+    upload(req, res, (err) => {
       if (err) {
-          res.send({ message: err });
+        res.send({ message: err });
       } else {
-          if (req.file == undefined) {
-              res.send({ message: 'No file selected!' });
-          } else {
-            console.log(req.file);
-            const filter = {email: req.session.passport.user.email };
-            User.updateOne(filter,{
-                img:{
-                  data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-                  contentType: 'image/png'
-              }
-            })
+        if (req.file == undefined) {
+          res.send({ message: 'No file selected!' });
+        } else {
+          console.log(req.file);
+          const filter = { email: req.session.passport.user.email };
+          User.updateOne(filter, {
+            img: {
+              data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+              contentType: 'image/png'
+            }
+          }).then((err) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("r");
               res.send({ message: 'File uploaded!', file: `uploads/${req.file.filename}` });
-          }
+              // res.redirect('/home');
+            }
+          });
+        }
       }
-  });
+    });
+  }
+  else {
+    res.redirect("/");
+  }
 });
 
 app.post('/form', (req, res) => {
   if (req.isAuthenticated()) {
     // console.log(req.session.passport);
-    const filter = {email: req.session.passport.user.email };
-    console.log();
+    const filter = { email: req.session.passport.user.email };
     User.updateOne(filter, {
-      
       about_me: req.body.description,
       place: req.body.place,
       // username: req.body.name,
-      img:req.file,
+      img: req.file,
       instagram: req.body.instagram,
       linkedin: req.body.linkedin,
       github: req.body.github
-    }).then((item, err) => {
+    }).then((err) => {
       if (err) {
         console.log(err);
       } else {
@@ -285,7 +296,7 @@ app.get("/society", (req, res) => {
   } else {
     res.redirect('/');
   }
- 
+
 });
 
 app.get("/batch", (req, res) => {
@@ -294,7 +305,7 @@ app.get("/batch", (req, res) => {
   } else {
     res.redirect('/');
   }
- 
+
 });
 
 app.listen(3000, () => {
