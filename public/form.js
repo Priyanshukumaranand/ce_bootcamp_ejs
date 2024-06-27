@@ -9,14 +9,32 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
         reader.onload = function(e) {
             document.getElementById('profileImage').src = e.target.result;
             document.getElementById('saveImageButton').hidden = false;
+            // Show the alert message
+            const alertMessage = document.getElementById('alertMessage');
+            alertMessage.textContent = 'Profile picture uploaded!';
+            alertMessage.classList.add('show');
+            setTimeout(function() {
+                alertMessage.classList.remove('show');
+            }, 3000); // Hide the alert after 3 seconds (3000 milliseconds)
         }
         reader.readAsDataURL(file);
     }
 });
 
-document.getElementById('saveImageButton').addEventListener('click', function() {
-    alert('Profile picture saved!');
-    document.getElementById('saveImageButton').hidden = true;
+document.getElementById('saveImageButton').addEventListener('click', function (event) {
+    event.preventDefault();
+    const formData = new FormData(document.getElementById('profileForm'));
+    fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 });
 
 document.getElementById('uploadContainer').addEventListener('dragover', function(event) {
@@ -41,35 +59,6 @@ document.getElementById('uploadContainer').addEventListener('drop', function(eve
         reader.onload = function(e) {
             document.getElementById('profileImage').src = e.target.result;
             document.getElementById('saveImageButton').hidden = false;
-        }
-        reader.readAsDataURL(file);
-    }
-});
-// document.getElementById('profileForm').addEventListener('submit', function(event) {
-//     event.preventDefault();
-//     // Here you can add your code to save the form data or perform any other actions
-//     alert('Changes saved successfully!');
-// });
-
-// document.getElementById('profileForm').addEventListener('submit', function(event) {
-//     event.preventDefault();
-//     // Here you can add your code to save the form data or perform any other actions
-//     const alertMessage = document.getElementById('alertMessage');
-//     alertMessage.textContent = 'Changes saved successfully!';
-//     alertMessage.classList.add('show');
-//     setTimeout(function() {
-//         alertMessage.classList.remove('show');
-//     }, 3000); // Hide the alert after 3 seconds (3000 milliseconds)
-// });
-
-
-document.getElementById('profilePicture').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profileImage').src = e.target.result;
-            document.getElementById('saveImageButton').hidden = false;
             // Show the alert message
             const alertMessage = document.getElementById('alertMessage');
             alertMessage.textContent = 'Profile picture uploaded!';
@@ -81,4 +70,3 @@ document.getElementById('profilePicture').addEventListener('change', function(ev
         reader.readAsDataURL(file);
     }
 });
-

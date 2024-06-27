@@ -10,6 +10,32 @@ const findOrCreate = require('mongoose-findorcreate');
 const path = require('path');
 const multer = require('multer');
 const app = express();
+var fs = require('fs');
+const storage = multer.diskStorage({
+  destination: './uploads/',
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 }, // Limit file size to 1MB
+  fileFilter: (req, file, cb) => {
+      checkFileType(file, cb);
+  }
+}).single('profilePicture');
+
+function checkFileType(file, cb) {
+  const filetypes = /jpeg|jpg|png|gif/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+      return cb(null, true);
+  } else {
+      cb('Error: Images Only!');
+  }
+}
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -95,15 +121,39 @@ app.get("/auth/google/home",
   }
 );
 
+app.post('/upload', (req, res) => {
+  upload(req, res, (err) => {
+      if (err) {
+          res.send({ message: err });
+      } else {
+          if (req.file == undefined) {
+              res.send({ message: 'No file selected!' });
+          } else {
+            console.log(req.file);
+            const filter = {email: req.session.passport.user.email };
+            User.updateOne(filter,{
+                img:{
+                  data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+                  contentType: 'image/png'
+              }
+            })
+              res.send({ message: 'File uploaded!', file: `uploads/${req.file.filename}` });
+          }
+      }
+  });
+});
+
 app.post('/form', (req, res) => {
   if (req.isAuthenticated()) {
-    console.log(req.session.passport);
+    // console.log(req.session.passport);
     const filter = {email: req.session.passport.user.email };
+    console.log();
     User.updateOne(filter, {
       
       about_me: req.body.description,
       place: req.body.place,
       // username: req.body.name,
+      img:req.file,
       instagram: req.body.instagram,
       linkedin: req.body.linkedin,
       github: req.body.github
