@@ -119,50 +119,81 @@ app.post('/form', (req, res) => {
   }
 });
 
-app.get("/home", (req, res) => {
-  if (req.isAuthenticated()) {
-    User.find({ "home": { $ne: null } }, (err, foundUsers) => {
-      if (err) {
-        console.log(err);
-      } else {
-        if (foundUsers) {
-          res.render("homepage");
-        }
-      }
-    });
-  } else {
-    res.redirect('/');
-  }
-});
+// app.get("/home", (req, res) => {
+//   if (req.isAuthenticated()) {
+//     User.find({ "home": { $ne: null } }, (err, foundUsers) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         if (foundUsers) {
+//           res.render("homepage");
+//         }
+//       }
+//     });
+//   } else {
+//     res.redirect('/');
+//   }
+// });
 
-app.get("/submit", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("home");
-  } else {
-    res.redirect("/login");
-  }
-});
+// app.post("/submit", (req, res) => {
+//   if (req.isAuthenticated()) {
+//     const submittedSecret = req.body.secret;
 
-app.post("/submit", (req, res) => {
-  if (req.isAuthenticated()) {
-    const submittedSecret = req.body.secret;
+//     User.findById(req.user.id, (err, foundUser) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         if (foundUser) {
+//           foundUser.secret = submittedSecret;
+//           foundUser.save(() => {
+//             res.redirect("/home");
+//           });
+//         }
+//       }
+//     });
+//   } else {
+//     res.redirect('/login');
+//   }
+// });
 
-    User.findById(req.user.id, (err, foundUser) => {
-      if (err) {
-        console.log(err);
-      } else {
-        if (foundUser) {
-          foundUser.secret = submittedSecret;
-          foundUser.save(() => {
-            res.redirect("/secrets");
-          });
-        }
-      }
-    });
-  } else {
-    res.redirect('/login');
-  }
-});
+// app.post("/register", (req, res) => {
+//   User.register({ username: req.body.username }, req.body.password, (err, user) => {
+//     if (err) {
+//       console.log(err);
+//       res.redirect("/register");
+//     } else {
+//       passport.authenticate("local")(req, res, () => {
+//         res.redirect("/secrets");
+//       });
+//     }
+//   });
+// });
+
+// app.post("/login", (req, res) => {
+//   const user = new User({
+//     username: req.body.username,
+//     password: req.body.password
+//   });
+
+//   req.login(user, (err) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       passport.authenticate("local")(req, res, () => {
+//         res.redirect("/homepage");
+//       });
+//     }
+//   });
+// });
+
+// app.get("/submit", (req, res) => {
+//   if (req.isAuthenticated()) {
+//     res.render("home");
+//   } else {
+//     res.redirect("/login");
+//   }
+// });
+
 
 app.get("/logout", (req, res) => {
   req.logout((err) => {
@@ -173,35 +204,6 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.post("/register", (req, res) => {
-  User.register({ username: req.body.username }, req.body.password, (err, user) => {
-    if (err) {
-      console.log(err);
-      res.redirect("/register");
-    } else {
-      passport.authenticate("local")(req, res, () => {
-        res.redirect("/secrets");
-      });
-    }
-  });
-});
-
-app.post("/login", (req, res) => {
-  const user = new User({
-    username: req.body.username,
-    password: req.body.password
-  });
-
-  req.login(user, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      passport.authenticate("local")(req, res, () => {
-        res.redirect("/homepage");
-      });
-    }
-  });
-});
 
 app.get("/home", (req, res) => {
   if (req.isAuthenticated()) {
