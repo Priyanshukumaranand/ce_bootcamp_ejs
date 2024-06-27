@@ -10,6 +10,7 @@
 <body>
     <nav>
         <!-- Add your navbar content here -->
+         
     </nav>
     <div class="background-container">
         <div class="stars"></div>
@@ -29,12 +30,12 @@
         <div id="alertMessage" class="alert-message"></div>
 
         <h1>Edit Profile</h1>
-        <form id="profileForm"  action="/update-profile" method="POST">
+        <form id="profileForm"  action="/update-profile" method="POST" enctype="multipart/form-data" >
             <div class="form-group">
-              <label for="profilePicture" id="profile_pic">Profile Picture</label>
+              <label for="profilePicture" id="profile_pic" >Profile Picture</label>
               <div class="upload-container" id="uploadContainer">
-                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
-                <img id="profileImage" src="https://robohash.org/random" alt="Profile Picture" class="profile-img">
+                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" >
+                <img id="profileImage" src="<%= user.profilePicture ? `/uploads/${user.profilePicture}` : 'https://robohash.org/random' %>" alt="Profile Picture" class="profile-img">
                 <p class="upload-instructions">Drag here to upload</p>
               </div>
               <div class="upload-options">

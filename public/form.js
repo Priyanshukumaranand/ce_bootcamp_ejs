@@ -136,12 +136,18 @@ profileForm.addEventListener('submit', async (event) => {
       console.log(message);
       // Update the UI with the new user data
       updateUserProfile(user);
+      // Show a success message
+      showSuccessMessage('Changes saved successfully!');
     } else {
       const { error } = await response.json();
       console.error(error);
+      // Show an error message
+      showErrorMessage('Error updating profile: ' + error);
     }
   } catch (error) {
     console.error('Error updating profile:', error);
+    // Show an error message
+    showErrorMessage('An error occurred. Please try again later.');
   }
 });
 
@@ -154,3 +160,42 @@ function updateUserProfile(user) {
   document.getElementById('linkedin').value = user.linkedin;
   document.getElementById('github').value = user.github;
 }
+
+const profilePictureInput = document.getElementById('profilePicture');
+const profileImageElement = document.getElementById('profileImage');
+const browseButton = document.getElementById('browseButton');
+const saveImageButton = document.getElementById('saveImageButton');
+
+
+browseButton.addEventListener('click', () => {
+  profilePictureInput.click();
+});
+
+profilePictureInput.addEventListener('change', () => {
+  const file = profilePictureInput.files[0];
+  if (file) {
+    const imageUrl = URL.createObjectURL(file);
+    profileImageElement.src = imageUrl;
+    saveImageButton.hidden = false;
+  }
+});
+
+saveImageButton.addEventListener('click', () => {
+  const formData = new FormData(profileForm);
+  fetch('/update-profile', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((response) => {
+      if (response.ok) {
+        // Redirect or show a success message
+        window.location.href = '/form';
+      } else {
+        // Handle the error
+        console.error('Error updating profile:', response.status);
+      }
+    })
+    .catch((error) => {
+      console.error('Error updating profile:', error);
+    });
+});

@@ -52,10 +52,10 @@ const userSchema = new mongoose.Schema({
   github:{
     type:String
   },
-  profilePicture:{
-    type:String,
-    default:null,
-  }
+  profilePicture: {
+    data: Buffer,
+    contentType: String
+  },
 });
 
 userSchema.pre('save', async function(next){

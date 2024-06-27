@@ -7,8 +7,8 @@ const userController=require('../controllers/usercontroller');
 const jwt = require('jsonwebtoken');
 const user = require('../models/user');
 const {jwtAuthMiddleware, generateToken}=require('../middleware/jwt');
-
-
+const path = require('path');
+// const upload = multer({ dest: 'uploads/' })
 router.get('/', (req, res) => { 
    res.render('signin');   
 }); 
@@ -44,8 +44,6 @@ router.post('/signup', async (req, res) =>{
 
 
 
-
-
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -73,7 +71,7 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       { name: existingUser.name, email: existingUser.email },
       process.env.JWT_SECRET, // Replace with your actual secret key
-      { expiresIn: '1h' } // Token expiration time
+      { expiresIn: '24h' } // Token expiration time
     );
 
     // Set the token in a cookie
@@ -87,11 +85,20 @@ router.post('/login', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
-router.get('/verify',userController.verifyMail);
 
 
-router.get('/users',(req,res)=>{
-    res.send("All Users")
+
+router.post('/logout', (req, res) => {
+  try {
+    // Clear the JWT token from the cookie
+    res.clearCookie('jwt');
+
+    // Redirect the user to the login page or any other desired page
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error during logout:', err);
+    res.status(500).send('Internal server error');
+  }
 });
 
 
@@ -114,7 +121,7 @@ router.get('/society', (req, res) => {
     res.render('society');
 });
 
-router.route("/testing").get(userController.loadUser);
+// router.route("/testing").get(userController.loadUser);
 
 router.get('/form', jwtAuthMiddleware, async (req, res) => {
     try{
@@ -145,10 +152,23 @@ router.get('/form', jwtAuthMiddleware, async (req, res) => {
     }
 });
 
-router.post('/update-profile', jwtAuthMiddleware, async (req, res) => {
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')},
+  filename: (req, file, cb) => {
+    cb(null, `${req.user.email.replace('@', '-')}.${file.mimetype.split('/')[1]}`);
+  }
+});
+
+const upload = multer({ storage });
+router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
+router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'), async (req, res) => {
     try {
       const email = req.user.email; // Convert ObjectId to string
-      const { name, place, description, instagram, linkedin, github } = req.body;
+      const { name, place, description, instagram, linkedin, github} = req.body;
     //   console.log(userId);
     //   console.log(req.user);
       // Find the user by ID and update the profile information
@@ -164,7 +184,15 @@ router.post('/update-profile', jwtAuthMiddleware, async (req, res) => {
       user.instagram = instagram;
       user.linkedin = linkedin;
       user.github = github;
-  
+      
+      // console.log(req.body);
+      
+      console.log(req.file);
+      if (req.file) {
+        user.profilePicture.data = req.file.buffer;
+        user.profilePicture.contentType = req.file.mimetype;
+      }
+
       await user.save();
   
     //   res.status(200).json({ message: 'Profile updated successfully', user });
@@ -176,7 +204,7 @@ router.post('/update-profile', jwtAuthMiddleware, async (req, res) => {
   });
 
 
-router.get('/batch', async (req, res) => {
+router.get('/batch',jwtAuthMiddleware,async (req, res) => {
     try {
         const users = await User.find(); // Fetch all users from MongoDB
         // console.log(users);

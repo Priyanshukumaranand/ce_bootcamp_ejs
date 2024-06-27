@@ -58,6 +58,12 @@
                 </li>
                 <li><a href="/society">SOCIETY</a></li>
                 <li><a href="/form">PROFILE</a></li>
+                <li>
+                    <form action="/logout" method="POST">
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+
             </ul>
             <div class="menu-btn">
                 <i class="fa-solid fa-bars"></i>
@@ -74,21 +80,27 @@
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
-                            <img src="images/RGimg.webp" alt="">
+                            <% if (user.profilePicture && user.profilePicture.data) { %>
+                                <img src="/uploads/<%= user.email.replace('@', '-') %>.<%= user.profilePicture.contentType.split('/')[1] %>" alt="Profile Picture">
+                            <% } else { %>
+                                <img src="images/RGimg.webp" alt="Default Profile Picture">
+                            <% } %>
                         </div>
+                        
+                        
                         <div class="info">
                             <div class="text">
                                 <h1><%= user.name %></h1>
                                 <h3><%= user.collegeId %></h3>>
                             </div>
                             <div class="links">
-                                <div class="link instagram">
+                                <div class="link instagram" value="<%= user.instagram %>">
                                     <i class="fa-brands fa-instagram"></i>
                                 </div>
-                                <div class="link github">
+                                <div class="link github" value="<%= user.github %>" >
                                     <i class="fa-brands fa-github"></i>
                                 </div>
-                                <div class="link linkedin">
+                                <div class="link linkedin" value="<%= user.linkedin %>" >
                                     <i class="fa-brands fa-linkedin"></i>
                                 </div>
                                 <div class="link mail">
