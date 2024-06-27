@@ -1,13 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middleware');
 const PostsController = require('../controllers/post-controller');
 const User=require('../models/user');
 const multer=require('multer');
 const userController=require('../controllers/usercontroller');
 const jwt = require('jsonwebtoken');
-const auth = require('../middleware/auth');
-const firebaseAuthController = require('../controllers/firebase-auth-controller');
 const user = require('../models/user');
 const {jwtAuthMiddleware, generateToken}=require('../middleware/jwt');
 
