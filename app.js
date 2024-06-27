@@ -131,7 +131,7 @@ app.post('/upload', (req, res) => {
         if (req.file == undefined) {
           res.send({ message: 'No file selected!' });
         } else {
-          console.log(req.file);
+          // console.log(req.file);
           const filter = { email: req.session.passport.user.email };
           User.updateOne(filter, {
             img: {
@@ -139,11 +139,18 @@ app.post('/upload', (req, res) => {
               contentType: 'image/png'
             }
           }).then((err) => {
-            if (err) {
+            if (!err) {
               console.log(err);
             } else {
               res.send({ message: 'File uploaded!', file: `uploads/${req.file.filename}` });
-              console.log("r");
+              fs.unlink(__dirname + '/uploads/' + req.file.filename, (err) => {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                console.log('File deleted successfully!');
+                return;
+              });
               // res.redirect('/home');
             }
           });
@@ -164,12 +171,12 @@ app.post('/form', (req, res) => {
       about_me: req.body.description,
       place: req.body.place,
       // username: req.body.name,
-      img: req.file,
       instagram: req.body.instagram,
       linkedin: req.body.linkedin,
       github: req.body.github
     }).then((err) => {
-      if (err) {
+      console.log("eret");
+      if (!err) {
         console.log(err);
       } else {
         res.redirect('/home');
