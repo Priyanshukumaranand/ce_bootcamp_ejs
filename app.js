@@ -17,12 +17,11 @@ app.use(bodyParser.urlencoded({
 
 app.use(session({
   secret: "Our little secret.",
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   cookie: { secure: true }
 
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -55,7 +54,7 @@ const User = new mongoose.model("User", userSchema);
 passport.use(User.createStrategy());
 
 passport.serializeUser(function (user, done) {
-  done(null, {id:user._id,username:user.username,googleId:user.googleId});
+  done(null, { id: user._id, username: user.username, googleId: user.googleId });
 });
 
 passport.deserializeUser(function (id, done) {
@@ -83,16 +82,19 @@ passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
   callbackURL: "http://localhost:3000/auth/google/home",
-  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+  scope: ['profile', 'email']
 },
-  function (accessToken, refreshToken, profile, cb) {
-    // Error here
-    // req.session.user = profile;
-
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-     
-      return cb(err, user);
-    });
+  function (accessToken, refreshToken,profile, cb) {
+    const email = profile.emails[0].value;
+    if (email.endsWith('@iiit-bh.ac.in') && email.startsWith('b5220')) {
+      User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        return cb(err, user);
+      });
+    } else {
+      // console.log( "cb(null, false, { message: 'Invalid email domain' })");
+      return cb(null, false, { message: 'Invalid email domain' });
+    }
   }
 ));
 
@@ -101,50 +103,52 @@ app.get("/", function (req, res) {
 });
 
 app.get("/auth/google",
-  passport.authenticate('google', { scope: ["profile"] })
+  passport.authenticate('google', { scope: ["profile","email"] })
 );
 
 app.get("/auth/google/home",
-  passport.authenticate('google', { failureRedirect: "/signin" }),
-  function (req, res,next) {
+  passport.authenticate('google', { failureRedirect: "/" }),
+  function (req, res, next) {
     // Successful authentication, redirect to form.
-    console.log(req.session.passport.user.googleId);
+    // console.log(req.session.passport.user.googleId);
     res.redirect("/form");
   });
-  //Form
-  
-  app.post('/form', upload.single('image'), (req, res, next) => {
+//Form
+
+app.post('/form',
+  passport.authenticate('local', { failureRedirect: '/', failureMessage: true }),
+  (req, res) => {
     // User.getCollection('users').find({ _id: User.id })
-    console.log(req.session);
+    console.log(req.session.passport.user.googleId);
 
 
-  // console.log(req.session);
-  // passport.authenticate("local")(req, res, function () {
+    // console.log(req.session);
+    // passport.authenticate("local")(req, res, function () {
     // res.redirect("/secrets");
-  // });
-  const filter = {googleId :  req.session.passport.user.googleId};
-  User.updateOne(filter, {
-    about_me: req.body.description,
-    place: req.body.place,
-    // img: {
-    //     data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-    //     contentType: 'image/png'
-    // },
-    username: req.body.name,
-    instagram: req.body.instagram,
-    linkedin: req.body.linkedin,
-    github: req.body.github
-  })
-    .then((item, err) => {
-      if (err) {
-        console.log(err);
-      }
-      else {
-        // item.save();
-        res.redirect('/home');
-      }
-    });
-});
+    // });
+    const filter = { googleId: req.session.passport.user.googleId };
+    User.updateOne(filter, {
+      about_me: req.body.description,
+      place: req.body.place,
+      // img: {
+      //     data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+      //     contentType: 'image/png'
+      // },
+      username: req.body.name,
+      instagram: req.body.instagram,
+      linkedin: req.body.linkedin,
+      github: req.body.github
+    })
+      .then((item, err) => {
+        if (err) {
+          console.log(err);
+        }
+        else {
+          // item.save();
+          res.redirect('/home');
+        }
+      });
+  });
 
 
 app.get("/home", function (req, res) {
