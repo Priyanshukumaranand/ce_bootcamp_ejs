@@ -131,7 +131,6 @@ app.post('/upload', (req, res) => {
         if (req.file == undefined) {
           res.send({ message: 'No file selected!' });
         } else {
-          // console.log(req.file);
           const filter = { email: req.session.passport.user.email };
           User.updateOne(filter, {
             img: {
@@ -151,7 +150,6 @@ app.post('/upload', (req, res) => {
                 console.log('File deleted successfully!');
                 return;
               });
-              // res.redirect('/home');
             }
           });
         }
@@ -165,17 +163,14 @@ app.post('/upload', (req, res) => {
 
 app.post('/form', (req, res) => {
   if (req.isAuthenticated()) {
-    // console.log(req.session.passport);
     const filter = { email: req.session.passport.user.email };
     User.updateOne(filter, {
       about_me: req.body.description,
       place: req.body.place,
-      // username: req.body.name,
       instagram: req.body.instagram,
       linkedin: req.body.linkedin,
       github: req.body.github
     }).then((err) => {
-      // console.log("eret");
       if (!err) {
         console.log(err);
       } else {
@@ -187,6 +182,72 @@ app.post('/form', (req, res) => {
   }
 });
 
+
+app.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
+
+app.get("/home", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("homepage");
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get("/form", (req, res) => {
+  if (req.isAuthenticated()) {
+    const user = req.user;
+    res.render("form", { user });
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get("/about", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("about");
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get("/society", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render("society");
+  } else {
+    res.redirect('/');
+  }
+
+});
+
+app.get("/batch", async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const users = await User.find(); // Fetch all users from MongoDB
+      // console.log(users);
+      res.render('batch.ejs', { users });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+      res.redirect('/');
+    }
+  }
+  else {
+    res.redirect('/');
+  }
+
+});
+
+app.listen(3000, () => {
+  console.log("Server started on port 3000.");
+});
 // app.get("/home", (req, res) => {
 //   if (req.isAuthenticated()) {
 //     User.find({ "home": { $ne: null } }, (err, foundUsers) => {
@@ -262,67 +323,3 @@ app.post('/form', (req, res) => {
 //   }
 // });
 
-
-app.get("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
-
-
-app.get("/home", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("homepage");
-  } else {
-    res.redirect('/');
-  }
-});
-
-app.get("/form", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("form");
-  } else {
-    res.redirect('/');
-  }
-});
-
-app.get("/about", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("about");
-  } else {
-    res.redirect('/');
-  }
-});
-
-app.get("/society", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("society");
-  } else {
-    res.redirect('/');
-  }
-
-});
-
-app.get("/batch", async(req, res) => {
-  if (req.isAuthenticated()) {
-  try {
-    const users = await User.find(); // Fetch all users from MongoDB
-    console.log(users);
-    res.render('batch.ejs', { users });
-} catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-    res.redirect('/');
-}}
-else{
-  res.redirect('/');
-}
-
-});
-
-app.listen(3000, () => {
-  console.log("Server started on port 3000.");
-});

@@ -74,7 +74,7 @@
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
-                            <img src="<%= user.img.data %>" alt="">
+                            <img src="data:image/<%=user.img.contentType%>;base64,<%=user.img.data.toString('base64')%>" alt="">
                         </div>
                         <div class="info">
                             <div class="text">

@@ -31,7 +31,7 @@
         <h1>Edit Profile</h1>
         <form id="profileForm" method="POST">
             <div class="form-group">
-                <label for="profilePicture" id="profile_pic" name="img">Profile Picture</label>
+                <label for="profilePicture" id="profile_pic" name="img" >Profile Picture</label>
                 <div class="upload-container" id="uploadContainer">
                     <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
                     <img id="profileImage" src="https://robohash.org/random" alt="Profile Picture" class="profile-img">
@@ -43,28 +43,28 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
+                <label for="name" >Name</label>
+                <input type="text" id="name" value="<%= user.username %>" name="name" disabled>
             </div>
             <div class="form-group">
                 <label for="place">Place</label>
-                <input type="text" id="place" name="place" required>
+                <input type="text" id="place" value="<%= user.place %>" name="place" required>
             </div>
             <div class="form-group">
                 <label for="description">About Me</label>
-                <textarea id="description" name="description" rows="4" required></textarea>
+                <textarea id="description" name="description" rows="4" required><%= user.about_me %></textarea>
             </div>
             <div class="form-group">
                 <label for="instagram">Instagram</label>
-                <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/yourprofile">
+                <input type="url" id="instagram" value="<%= user.instagram %>" name="instagram" placeholder="https://instagram.com/yourprofile">
             </div>
             <div class="form-group">
                 <label for="linkedin">LinkedIn</label>
-                <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                <input type="url" id="linkedin" value="<%= user.linkedin %>" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
             </div>
             <div class="form-group">
                 <label for="github">GitHub</label>
-                <input type="url" id="github" name="github" placeholder="https://github.com/yourprofile">
+                <input type="url" id="github" value="<%= user.github %>" name="github" placeholder="https://github.com/yourprofile">
             </div>
             <button type="submit" >Save Changes</button>
         </form>
