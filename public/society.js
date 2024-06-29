@@ -160,3 +160,56 @@ function consoleText(words, id, colors) {
     }
   }, 400)
 }
+
+
+$(document).ready(function () {
+    $('.menu-btn').click(function () {
+        $('.navbar .menu').toggleClass('active');
+        $('.menu-btn i').toggleClass('active');
+        $('.dropdown-content').removeClass('onscreen');
+    });
+     $('.dropdown').click(function () {
+        $('.dropdown-content').toggleClass('onscreen');
+    });
+});
+let currentIndex = 0;
+
+function moveCarousel(direction) {
+    const carousel = document.querySelector('.carousel');
+    const items = document.querySelectorAll('.carousel-item');
+    const totalItems = items.length;
+
+    currentIndex += direction;
+
+    if (currentIndex < 0) {
+        currentIndex = totalItems - 1;
+    } else if (currentIndex >= totalItems) {
+        currentIndex = 0;
+    }
+
+    const offset = -currentIndex * 100;
+    carousel.style.transform = `translateX(${offset}%)`;
+}
+
+
+
+
+/** code by webdevtrick ( https://webdevtrick.com ) **/
+(function($) { 
+  $(function() { 
+    $('nav ul li a:not(:only-child)').click(function(e) {
+      $(this).siblings('.nav-dropdown').toggle();
+      $('.dropdown').not($(this).siblings()).hide();
+      e.stopPropagation();
+    });
+    $('html').click(function() {
+      $('.nav-dropdown').hide();
+    });
+    $('#nav-toggle').click(function() {
+      $('nav ul').slideToggle();
+    });
+    $('#nav-toggle').on('click', function() {
+      this.classList.toggle('active');
+    });
+  }); 
+})(jQuery);
