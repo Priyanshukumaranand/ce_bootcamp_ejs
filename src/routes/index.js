@@ -8,41 +8,66 @@ const jwt = require('jsonwebtoken');
 const user = require('../models/user');
 const {jwtAuthMiddleware, generateToken}=require('../middleware/jwt');
 const path = require('path');
-// const upload = multer({ dest: 'uploads/' })
+const OTP=require('../models/OTP');
+const sendOTP=require('../controllers/usercontroller');
 router.get('/', (req, res) => { 
    res.render('signin');   
 }); 
+// router.post("/sendotp",userController.sendOTP);
 
-router.post('/signup', async (req, res) =>{
-    try{
-        const data = req.body // Assuming the request body contains the person data
+router.post('/signup', async (req, res) => {
+  try {
+      const data = req.body; // Assuming the request body contains the person data
+      // console.log(req.user," req.user");
+      const { email, otp } = req.body;
 
-        // Create a new Person document using the Mongoose model
-        const newUser = new User(data);
+      // Check if the email already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+          return res.status(400).json({ error: 'Email already exists' });
+      }
 
-        // Save the new person to the database
-        const response = await newUser.save();  //here the password is hashed inside model
-        console.log('data saved');
+      // find the most recent otp stored for the user
+      const recentOTP = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 
-        const payload = {
-            _id: response._id,
-            collegeId: response.collegeId,
-            email: response.email
-        }
-        console.log(JSON.stringify(payload));
-        const token = generateToken(payload);
-        console.log("Token is : ", token);
+      // validate otp
+      if (recentOTP.length === 0) {
+          // OTP not found
+          return res.status(400).json({
+              success: false,
+              message: "OTP not found",
+          });
+      } else if (otp !== recentOTP[0].otp) {
+          // Invalid OTP
+          return res.status(400).json({
+              success: false,
+              message: "OTP not valid",
+          });
+      }
 
-        res.status(200).json({message:"Successfully created account please login again"});
-        // res.redirect('/home',{email});
-    }
-    catch(err){
-        console.log(err);
-        res.status(500).json({error: 'Internal Server Error'});
-    }
-})
+      // Create a new Person document using the Mongoose model
+      const newUser = new User(data);
 
+      // Save the new person to the database
+      const response = await newUser.save(); // here the password is hashed inside model
+      console.log('data saved');
 
+      const payload = {
+          _id: response._id,
+          collegeId: response.collegeId,
+          email: response.email
+      };
+      console.log(JSON.stringify(payload), " JSON.stringify(payload)");
+      const token = generateToken(payload);
+      console.log("Token is : ", token);
+
+      res.status(200).json({ message: "Successfully created account, please login again" });
+      // res.redirect('/home',{email});
+  } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
@@ -187,7 +212,7 @@ router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'
       
       // console.log(req.body);
       
-      console.log(req.file);
+      console.log(req.file, ' req.file');
       if (req.file) {
         user.profilePicture.data = req.file.buffer;
         user.profilePicture.contentType = req.file.mimetype;

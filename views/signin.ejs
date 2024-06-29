@@ -47,15 +47,18 @@
 						<i class="fas fa-envelope"></i>
 						<input type="email" placeholder="Email" name="email" required />
 					</div>
+					<button type="button" class="btn transparent" id="send-otp-btn">
+						Send OTP
+					</button>
+					<div class="input-field otp-field" style="display: none;">
+						<i class="fas fa-lock"></i>
+						<input type="text" placeholder="Enter OTP" name="otp" required />
+					</div>
 					<div class="input-field">
 						<i class="fas fa-lock"></i>
 						<input type="password" placeholder="Password" name="password" required />
 					</div>
-					<!-- <div class="input-field">
-						<i class="fas fa-lock"></i>
-						<label for="image" class="form-label">Select Image</label>
-						<input type="file" placeholder="Image" name="image" required />
-					</div> -->
+					
 
 					<input type="submit" class="btn" value="Sign up" />
 					<p class="social-text">Or Sign up with social platforms</p>
@@ -96,26 +99,7 @@
 	</div>
 
 	<script src="signin.js"></script>
-	<script>
-		function login() {
-  var provider = new firebase.auth.GoogleAuthProvider();
-
-  firebase.auth().signInWithPopup(provider).then(function(result) {
-    // The user is now signed in
-    var user = result.user;
-
-    // Display the user's name and email address
-    document.getElementById('name').innerHTML = user.displayName;
-    document.getElementById('email').innerHTML = user.email;
-  }).catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-
-    console.log(errorCode, errorMessage);
-  });
-}
-	</script>
+	
 </body>
 
 </html>
