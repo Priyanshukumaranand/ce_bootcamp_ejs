@@ -70,3 +70,46 @@ document.getElementById('uploadContainer').addEventListener('drop', function(eve
         reader.readAsDataURL(file);
     }
 });
+document.addEventListener('DOMContentLoaded', function () {
+    var textarea = document.getElementById('description');
+    var charCount = document.getElementById('remaining');
+    var maxChars = parseInt(textarea.getAttribute('maxlength'));
+
+    updateCharCount();
+
+    textarea.addEventListener('input', function () {
+        updateCharCount();
+    });
+
+    function updateCharCount() {
+        var remainingChars = maxChars - textarea.value.length;
+        charCount.textContent = remainingChars + " out of " + maxChars;
+        if (remainingChars < 0) {
+            charCount.style.color = 'red'; // Change color to indicate exceeding limit
+        } else {
+            charCount.style.color = ''; // Reset color
+        }
+    }
+});
+
+
+
+(function($) {
+    $(document).ready(function() {
+      $('nav ul li a:not(:only-child)').on('click', function(e) {
+        $(this).siblings('.nav-dropdown').toggle();
+        $('.nav-dropdown').not($(this).siblings()).hide();
+        e.stopPropagation();
+      });
+  
+      $('html').on('click', function() {
+        $('.nav-dropdown').hide();
+      });
+  
+      $('#nav-toggle').on('click', function() {
+        $('nav ul').slideToggle();
+        this.classList.toggle('active');
+      });
+    });
+  })(jQuery);
+  

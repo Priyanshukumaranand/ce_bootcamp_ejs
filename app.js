@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require("./config/passport");
-
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Express setup
@@ -39,6 +39,6 @@ app.use("/auth", authRoutes);
 app.use("/", uploadRoutes);
 app.use("/", formRoutes);
 
-app.listen(3000, () => {
-  console.log("Server started on port 3000.");
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });
