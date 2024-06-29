@@ -1,17 +1,43 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const home =require('../routes/user')
-// const generateToken = require('../middleware/jwt')
+const OTP=require('../models/OTP');
+const bcrypt=require('bcrypt');
+// const generateToken = require('../middleware/jwt');
+const { sendVerificationEmail } = require('../models/OTP'); 
+
 exports.signup = async (req, res) => {
   try {
     const data = req.body;
-    const { email, otp } = req.body;
+    const email= req.body.email;
+    const password=req.body.password;
+
+    
+
 
     // Check if the email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email already exists' });
     }
+
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Update the data object with the hashed password
+    data.password = hashedPassword;
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    // const otpDocument = new OTP({
+    //     email,
+    //     otp,
+    //   });
+    const otpDocument = await OTP.create({ email, otp});
+      console.log('otpDocument is ',otpDocument)
+
+    //   otpDocument.save();
+
+      await sendVerificationEmail(email,otp)    ;
 
     // Create a new User document using the Mongoose model
     const newUser = new User(data);

@@ -76,6 +76,10 @@ app.use('/', userRoutes);
 app.use("/", uploadRoutes);
 
 
+// OTP verification 
+const OTP = require('./src/models/OTP');
+
+
 
 // Connect to MongoDB
 

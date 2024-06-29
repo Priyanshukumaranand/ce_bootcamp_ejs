@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const { type } = require("os");
 const bcrypt=require('bcrypt');
 const passportLocalMongoose = require("passport-local-mongoose");
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   email:{
     type:String,
-    required:true,
+    // required:true,
   },
   password:{
     type:String,
@@ -61,7 +61,7 @@ userSchema.pre('save', async function(next){
       const salt = await bcrypt.genSalt(10);
 
       // hash password
-      const hashedPassword = await bcrypt.hash(user.password, salt);
+      const hashedPassword = bcrypt.hash(user.password, salt);
       
       // Override the plain password with the hashed one
       user.password = hashedPassword;
@@ -83,7 +83,6 @@ userSchema.methods.comparePassword = async function(candidatePassword){
 
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
-
 
 
 module.exports=mongoose.model('User',userSchema);
