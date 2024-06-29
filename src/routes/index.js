@@ -28,22 +28,22 @@ router.post('/signup', async (req, res) => {
       }
 
       // find the most recent otp stored for the user
-      const recentOTP = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+      // const recentOTP = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 
-      // validate otp
-      if (recentOTP.length === 0) {
-          // OTP not found
-          return res.status(400).json({
-              success: false,
-              message: "OTP not found",
-          });
-      } else if (otp !== recentOTP[0].otp) {
-          // Invalid OTP
-          return res.status(400).json({
-              success: false,
-              message: "OTP not valid",
-          });
-      }
+      // // validate otp
+      // if (recentOTP.length === 0) {
+      //     // OTP not found
+      //     return res.status(400).json({
+      //         success: false,
+      //         message: "OTP not found",
+      //     });
+      // } else if (otp !== recentOTP[0].otp) {
+      //     // Invalid OTP
+      //     return res.status(400).json({
+      //         success: false,
+      //         message: "OTP not valid",
+      //     });
+      // }
 
       // Create a new Person document using the Mongoose model
       const newUser = new User(data);
