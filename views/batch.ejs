@@ -74,8 +74,12 @@
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
-                            <img src="data:image/<%=user.img.contentType%>;base64,<%=user.img.data.toString('base64')%>"
-                                alt="">
+                        
+                            <% if ( user.img.data === undefined || user.img.data === null) { %>
+                                <img src="uploads/noimage.png" alt="">
+                            <% } else { %>
+                                <img src="data:image/<%= user.img.contentType %>;base64,<%= user.img.data.toString('base64') %>" alt="">
+                            <% } %>
                         </div>
                         <div class="info">
                             <div class="text">

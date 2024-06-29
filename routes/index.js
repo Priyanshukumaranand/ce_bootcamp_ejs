@@ -51,6 +51,7 @@ router.get("/batch", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const users = await User.find(); // Fetch all users from MongoDB
+      // console.log(users.img);
       res.render('batch.ejs', { users });
     } catch (error) {
       console.error(error);

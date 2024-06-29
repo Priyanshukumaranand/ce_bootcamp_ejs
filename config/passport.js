@@ -33,6 +33,7 @@ passport.use(new GoogleStrategy({
   const email = profile.emails[0].value;
   if (email.endsWith('@iiit-bh.ac.in') && email.startsWith('b5220')) {
     User.findOrCreate({ email: email, googleId: profile.id, username: profile.displayName }, (err, user) => {
+      
       return cb(err, user);
     });
   } else {

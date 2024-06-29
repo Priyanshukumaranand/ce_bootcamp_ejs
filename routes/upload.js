@@ -7,7 +7,7 @@ const User = require('../models/user');
 const router = express.Router();
 
 const storage = multer.diskStorage({
-  destination: './uploads/',
+  destination: './public/uploads/',
   filename: (req, file, cb) => {
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
@@ -45,15 +45,15 @@ router.post('/upload', (req, res) => {
           const filter = { email: req.session.passport.user.email };
           User.updateOne(filter, {
             img: {
-              data: fs.readFileSync(path.join(__dirname + '/../uploads/' + req.file.filename)),
+              data: fs.readFileSync(path.join(__dirname + '/../public/uploads/' + req.file.filename)),
               contentType: 'image/png'
             }
           }).then((err) => {
             if (!err) {
               console.log(err);
             } else {
-              res.send({ message: 'File uploaded!', file: `uploads/${req.file.filename}` });
-              fs.unlink(__dirname + '/../uploads/' + req.file.filename, (err) => {
+              res.send({ message: 'File uploaded!', file: `public/uploads/${req.file.filename}` });
+              fs.unlink(__dirname + '/../public/uploads/' + req.file.filename, (err) => {
                 if (err) {
                   console.log(err);
                   return;
