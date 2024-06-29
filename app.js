@@ -3,45 +3,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require('express-session');
-const passport = require("passport");
-const passportLocalMongoose = require("passport-local-mongoose");
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const findOrCreate = require('mongoose-findorcreate');
-const path = require('path');
-const multer = require('multer');
+const passport = require("./config/passport");
+
 const app = express();
-var fs = require('fs');
 
-const storage = multer.diskStorage({
-  destination: './uploads/',
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
-});
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 3000000 }, // Limit file size to 1MB
-  fileFilter: (req, file, cb) => {
-    checkFileType(file, cb);
-  }
-}).single('profilePicture');    
-
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb('Error: Images Only!');
-  }
-}
-
+// Express setup
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Session setup
 app.use(session({
   secret: "Our little secret.",
   resave: true,
@@ -49,277 +20,25 @@ app.use(session({
   cookie: { secure: false }
 }));
 
+// Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
 
+// MongoDB setup
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.set("useCreateIndex", true);
 
-const userSchema = new mongoose.Schema({
-  email: String,
-  password: String,
-  username: String,
-  place: String,
-  about_me: String,
-  instagram: String,
-  linkedin: String,
-  github: String,
-  googleId: String,
-  img: {
-    data: Buffer,
-    contentType: String
-  },
-  secret: String
-});
+// Routes
+const indexRoutes = require('./routes/index');
+const authRoutes = require('./routes/auth');
+const uploadRoutes = require('./routes/upload');
+const formRoutes = require('./routes/form');
 
-userSchema.plugin(passportLocalMongoose);
-userSchema.plugin(findOrCreate);
-
-const User = mongoose.model("User", userSchema);
-
-passport.use(User.createStrategy());
-
-passport.serializeUser((user, done) => {
-  done(null, { id: user.id, username: user.username, email: user.email });
-});
-
-passport.deserializeUser((user, done) => {
-  User.findById(user.id, (err, user) => {
-    done(err, user);
-  });
-});
-
-passport.use(new GoogleStrategy({
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/google/home",
-  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-  scope: ['profile', 'email']
-}, (accessToken, refreshToken, profile, cb) => {
-  const email = profile.emails[0].value;
-  if (email.endsWith('@iiit-bh.ac.in') && email.startsWith('b5220')) {
-    // console.log(profile)
-    User.findOrCreate({ email: email, googleId: profile.id, username: profile.displayName }, (err, user) => {
-      return cb(err, user);
-    });
-  } else {
-    return cb(null, false, { message: 'Invalid email domain' });
-  }
-}));
-
-app.get("/", (req, res) => {
-  res.render("signin");
-});
-
-app.get("/auth/google",
-  passport.authenticate('google', { scope: ["profile", "email"] })
-);
-
-app.get("/auth/google/home",
-  passport.authenticate('google', { failureRedirect: "/" }),
-  (req, res) => {
-    res.redirect("/home");
-  }
-);
-
-app.post('/upload', (req, res) => {
-  if (req.isAuthenticated()) {
-    upload(req, res, (err) => {
-      if (err) {
-        res.send({ message: err });
-      } else {
-        if (req.file == undefined) {
-          res.send({ message: 'No file selected!' });
-        } else {
-          const filter = { email: req.session.passport.user.email };
-          User.updateOne(filter, {
-            img: {
-              data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-              contentType: 'image/png'
-            }
-          }).then((err) => {
-            if (!err) {
-              console.log(err);
-            } else {
-              res.send({ message: 'File uploaded!', file: `uploads/${req.file.filename}` });
-              fs.unlink(__dirname + '/uploads/' + req.file.filename, (err) => {
-                if (err) {
-                  console.log(err);
-                  return;
-                }
-                console.log('File deleted successfully!');
-                return;
-              });
-            }
-          });
-        }
-      }
-    });
-  }
-  else {
-    res.redirect("/");
-  }
-});
-
-app.post('/form', (req, res) => {
-  if (req.isAuthenticated()) {
-    const filter = { email: req.session.passport.user.email };
-    User.updateOne(filter, {
-      about_me: req.body.description,
-      place: req.body.place,
-      instagram: req.body.instagram,
-      linkedin: req.body.linkedin,
-      github: req.body.github
-    }).then((err) => {
-      if (!err) {
-        console.log(err);
-      } else {
-        res.redirect('/home');
-      }
-    });
-  } else {
-    res.redirect('/');
-  }
-});
-
-
-app.get("/logout", (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
-  });
-});
-
-
-app.get("/home", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("homepage");
-  } else {
-    res.redirect('/');
-  }
-});
-
-app.get("/form", (req, res) => {
-  if (req.isAuthenticated()) {
-    const user = req.user;
-    res.render("form", { user });
-  } else {
-    res.redirect('/');
-  }
-});
-
-app.get("/about", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("about");
-  } else {
-    res.redirect('/');
-  }
-});
-
-app.get("/society", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.render("society");
-  } else {
-    res.redirect('/');
-  }
-
-});
-
-app.get("/batch", async (req, res) => {
-  if (req.isAuthenticated()) {
-    try {
-      const users = await User.find(); // Fetch all users from MongoDB
-      // console.log(users);
-      res.render('batch.ejs', { users });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
-      res.redirect('/');
-    }
-  }
-  else {
-    res.redirect('/');
-  }
-
-});
+app.use("/", indexRoutes);
+app.use("/auth", authRoutes);
+app.use("/", uploadRoutes);
+app.use("/", formRoutes);
 
 app.listen(3000, () => {
   console.log("Server started on port 3000.");
 });
-// app.get("/home", (req, res) => {
-//   if (req.isAuthenticated()) {
-//     User.find({ "home": { $ne: null } }, (err, foundUsers) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         if (foundUsers) {
-//           res.render("homepage");
-//         }
-//       }
-//     });
-//   } else {
-//     res.redirect('/');
-//   }
-// });
-
-// app.post("/submit", (req, res) => {
-//   if (req.isAuthenticated()) {
-//     const submittedSecret = req.body.secret;
-
-//     User.findById(req.user.id, (err, foundUser) => {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         if (foundUser) {
-//           foundUser.secret = submittedSecret;
-//           foundUser.save(() => {
-//             res.redirect("/home");
-//           });
-//         }
-//       }
-//     });
-//   } else {
-//     res.redirect('/login');
-//   }
-// });
-
-// app.post("/register", (req, res) => {
-//   User.register({ username: req.body.username }, req.body.password, (err, user) => {
-//     if (err) {
-//       console.log(err);
-//       res.redirect("/register");
-//     } else {
-//       passport.authenticate("local")(req, res, () => {
-//         res.redirect("/secrets");
-//       });
-//     }
-//   });
-// });
-
-// app.post("/login", (req, res) => {
-//   const user = new User({
-//     username: req.body.username,
-//     password: req.body.password
-//   });
-
-//   req.login(user, (err) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       passport.authenticate("local")(req, res, () => {
-//         res.redirect("/homepage");
-//       });
-//     }
-//   });
-// });
-
-// app.get("/submit", (req, res) => {
-//   if (req.isAuthenticated()) {
-//     res.render("home");
-//   } else {
-//     res.redirect("/login");
-//   }
-// });
-
