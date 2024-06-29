@@ -25,8 +25,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // MongoDB setup
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.set("useCreateIndex", true);
+mongoose.connect(process.env.MONGODB_URI, {});
+// mongoose.set("useCreateIndex", true);
 
 // Routes
 const indexRoutes = require('./routes/index');

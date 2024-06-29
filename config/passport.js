@@ -4,16 +4,23 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const findOrCreate = require('mongoose-findorcreate');
 const User = require("../models/user");
 
+// User.plugin(passportLocalMongoose);
+// User.plugin(findOrCreate);
+
 passport.use(User.createStrategy());
 
 passport.serializeUser((user, done) => {
   done(null, { id: user.id, username: user.username, email: user.email });
 });
 
-passport.deserializeUser((user, done) => {
-  User.findById(user.id, (err, user) => {
-    done(err, user);
-  });
+
+passport.deserializeUser(async (user, done) => {
+  try {
+    const foundUser = await User.findById(user.id);
+    done(null, foundUser);
+  } catch (err) {
+    done(err, null);
+  }
 });
 
 passport.use(new GoogleStrategy({
