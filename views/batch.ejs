@@ -67,19 +67,17 @@
     </header>
 
     <main>
-
-
         <div class="cards-container">
             <% users.forEach((user)=> { %>
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
-                        
-                            <% if ( user.img.data === undefined || user.img.data === null) { %>
+                            <% if ( user.img.data===undefined || user.img.data===null) { %>
                                 <img src="uploads/noimage.png" alt="">
-                            <% } else { %>
-                                <img src="data:image/<%= user.img.contentType %>;base64,<%= user.img.data.toString('base64') %>" alt="">
-                            <% } %>
+                                <% } else { %>
+                                    <img src="data:image/<%= user.img.contentType %>;base64,<%= user.img.data.toString('base64') %>"
+                                        alt="">
+                                    <% } %>
                         </div>
                         <div class="info">
                             <div class="text">
@@ -88,25 +86,38 @@
                                 </h1>
                                 <h3>
                                     <%= user.email %>
-                                </h3>>
+                                </h3>
                             </div>
                             <div class="links">
-                                <div class="link instagram">
-                                    <a href="<%= user.instagram %>" style="color:white;" target="_blank"><i
-                                            class="fa-brands fa-instagram"></i></a>
-                                </div>
-                                <div class="link github">
-                                    <a href="<%= user.github %>" style="color:white;" target="_blank"> <i
-                                            class="fa-brands fa-github"></i></a>
-                                </div>
-                                <div class="link linkedin">
-                                    <a href="<%= user.linkedin %>" style="color:white;" target="_blank"> <i
-                                            class="fa-brands fa-linkedin"></i></a>
-                                </div>
-                                <div class="link mail">
-                                    <a href="<%= user.email %>" style="color:white;" target="_blank"> <i
-                                            class="fa-regular fa-envelope"></i></a>
-                                </div>
+                                <% if ( user.instagram !==undefined && user.instagram !==null && user.instagram !=='' )
+                                    { %>
+                                    <div class="link instagram">
+                                        <a href="<%= user.instagram %>" style="color:white;" target="_blank"><i
+                                                class="fa-brands fa-instagram"></i></a>
+                                    </div>
+                                    <% } %>
+                                    <% if ( user.github !==undefined && user.github !==null && user.github
+                                            !=='' ) { %>
+                                    <div class="link github">
+                                        <a href="<%= user.github %>" style="color:white;" target="_blank"> <i
+                                                class="fa-brands fa-github"></i></a>
+                                    </div>
+                                    <% } %>
+                                    <% if ( user.linkedin !==undefined && user.linkedin !==null &&
+                                            user.linkedin !=='' ) { %>
+                                            <div class="link linkedin">
+                                            <a href="<%= user.linkedin %>" style="color:white;"
+                                                target="_blank"> <i class="fa-brands fa-linkedin"></i></a>
+                                    </div>
+                                     <% } %>
+                                     <% if ( user.email !==undefined && user.email !==null &&
+                                     user.email !=='' ) { %>
+                                        <div class="link mail">
+                                            <a href="<%= user.email %>" style="color:white;"
+                                                target="_blank"> <i
+                                                class="fa-regular fa-envelope"></i></a>
+                                        </div>
+                                 <% } %>
                             </div>
                         </div>
                     </div>

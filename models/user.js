@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     data: Buffer,
     contentType: String
   },
+  time : { type : Date, default: Date.now },
   secret: String
 });
 
