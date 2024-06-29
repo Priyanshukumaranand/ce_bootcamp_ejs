@@ -20,11 +20,11 @@ const storage = multer.diskStorage({
 });
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1000000 }, // Limit file size to 1MB
+  limits: { fileSize: 3000000 }, // Limit file size to 1MB
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb);
   }
-}).single('profilePicture');
+}).single('profilePicture');    
 
 function checkFileType(file, cb) {
   const filetypes = /jpeg|jpg|png|gif/;
