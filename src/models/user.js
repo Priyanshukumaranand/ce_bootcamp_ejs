@@ -1,16 +1,18 @@
 const { default: mongoose } = require("mongoose");
 const { type } = require("os");
 const bcrypt=require('bcrypt');
+const passportLocalMongoose = require("passport-local-mongoose");
+var findOrCreate = require('mongoose-findorcreate');
 
 
 const userSchema = new mongoose.Schema({
   name: {
     type:String,
-    required:true
+    // required:true
   },
   collegeId:{
     type:String,
-    required:true,
+    // required:true,
   },
   email:{
     type:String,
@@ -18,24 +20,13 @@ const userSchema = new mongoose.Schema({
   },
   password:{
     type:String,
-    required:true,
+    // required:true,
   },
-  image:{
-    type:String,
-  },
+  
   craeted:{
     type:Date,
     required:true,
-    default:Date.now,
-  },
-  is_admin:{
-    type:Number,
-    
-    default:0,
-  },
-  is_verified:{
-    type:Number,
-    default:0,
+    default:Date.now(),
   },
   place:{
     type:String,
@@ -52,10 +43,11 @@ const userSchema = new mongoose.Schema({
   github:{
     type:String
   },
-  profilePicture: {
+  img: {
     data: Buffer,
     contentType: String
   },
+  secret: String
 });
 
 userSchema.pre('save', async function(next){
@@ -88,6 +80,10 @@ userSchema.methods.comparePassword = async function(candidatePassword){
       throw err;
   }
 }
+
+userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
+
 
 
 module.exports=mongoose.model('User',userSchema);

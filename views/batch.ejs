@@ -80,11 +80,12 @@
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
-                            <% if (user.profilePicture && user.profilePicture.data) { %>
-                                <img src="/uploads/<%= user.email.replace('@', '-') %>.<%= user.profilePicture.contentType.split('/')[1] %>" alt="Profile Picture">
-                            <% } else { %>
-                                <img src="images/RGimg.webp" alt="Default Profile Picture">
-                            <% } %>
+                            <% if ( user.img.data===undefined || user.img.data===null) { %>
+                                <img src="images/RGimg.webp" alt="">
+                                <% } else { %>
+                                    <img src="data:image/<%= user.img.contentType %>;base64,<%= user.img.data.toString('base64') %>"
+                                        alt="">
+                                    <% } %>
                         </div>
                         
                         
