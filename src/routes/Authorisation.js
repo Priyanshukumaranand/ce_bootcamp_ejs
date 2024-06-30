@@ -15,9 +15,4 @@ router.get("/google/home",
   }
 );
 
-
-
-
-
-
 module.exports = router;

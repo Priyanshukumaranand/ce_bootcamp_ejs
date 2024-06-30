@@ -1,14 +1,22 @@
 require("dotenv").config();
 const express = require('express');
-const bodyparser = require("body-parser");
+const bodyParser = require("body-parser");
+
 const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require("./config/passport");
 const app = express();
 // Express setup
-app.use(express.static("public"));
+// app.use(express.static("public"));
+// app.use(express.static('public', {
+//     setHeaders: (res, path, stat) => {
+//       if (path.endsWith('.js')) {
+//         res.set('Content-Type', 'application/javascript');
+//       }
+//     }   
+//   }));
 app.set('view engine', 'ejs');
-app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 // Session setup
 app.use(session({
     secret: "Our little secret.",
@@ -19,6 +27,10 @@ app.use(session({
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+const flash = require('connect-flash');
+app.use(flash());
 mongoose.connect(process.env.MONGODB_URI);
 
 const cookieParser = require('cookie-parser');
@@ -30,9 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-app.use(bodyparser.urlencoded({
-    extended: true
-}))
+
 
 
 
@@ -53,6 +63,10 @@ app.get('/', (req, res) => {
     res.render('signin');   
  }); 
 
+// use of body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
    
 // const indexRoutes = require('./src/routes/index');
 const aboutRoutes=require('./src/routes/about');
@@ -63,7 +77,8 @@ const societyRoutes=require('./src/routes/society');
 const userRoutes=require('./src/routes/user');
 const uploadRoutes = require('./src/routes/upload');
 const AuthorisationRoutes=require('./src/routes/Authorisation');
-
+const {generateOTP}=require('./src/routes/generateOTP');
+const forgetPasswordController=require('./src/controllers/forgetPasswordController')
 
 // app.use('/', indexRoutes);
 app.use('/', aboutRoutes);
@@ -74,6 +89,10 @@ app.use('/', homeRoutes);
 app.use('/', societyRoutes);
 app.use('/', userRoutes);
 app.use("/", uploadRoutes);
+app.post('/generate-otp', generateOTP);
+app.get('/forgetpassword', forgetPasswordController.getForgetPasswordPage);
+app.post('/forgetPassword',forgetPasswordController.postForgetPassword);
+
 
 
 // OTP verification 

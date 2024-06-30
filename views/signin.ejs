@@ -16,7 +16,7 @@
 			<div class="signin-signup">
 				<form action="/login" method="post" class="sign-in-form">
 					<h2 class="title">Sign in</h2>
-					<div class="input-field">
+					<div class="input-field" >
 						<i class="fas fa-envelope"></i>
 						<input type="email" placeholder="E-mail" name="email" />
 					</div>
@@ -27,7 +27,7 @@
 					
 					<input type="submit" value="Login" class="btn solid" />
 					<p class="social-text">Or Sign in with social platforms</p>
-					<button type="button" id="Google-signin1" class="login-with-google-btn" role="button">
+					<button type="button" id="Google-signin1" class="login-with-google-btn" onclick="login()" role="button">
 						Sign in with Google
 					</button>
 				</form>
@@ -44,20 +44,18 @@
 					</div>
 					<div class="input-field">
 						<i class="fas fa-envelope"></i>
-						<input type="email" placeholder="Email" name="email" required />
+						<input type="email" placeholder="Email" id="email-id" name="email" required />
 					</div>
-					<!-- <button type="button" class="btn transparent" id="sendotpbtn">
-						Send OTP
-					</button>
-					<div class="input-field otp-field" style="display: none;">
-						<i class="fas fa-lock"></i>
-						<input type="text" placeholder="Enter OTP" name="otp" required />
-					</div> -->
+					
 					<div class="input-field">
 						<i class="fas fa-lock"></i>
 						<input type="password" placeholder="Password" name="password" required />
 					</div>
-					
+					<div class="input-field">
+						<button type="button" id="sendOTPBtn" name="otp">Send OTP</button>
+						<input type="text" placeholder="Enter OTP" id="otpInput" name="otp" required />
+
+					  </div>
 
 					<input type="submit" class="btn" value="Sign up" />
 					<p class="social-text">Or Sign up with social platforms</p>

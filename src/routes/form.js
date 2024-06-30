@@ -1,6 +1,7 @@
 const express = require('express');
 const { jwtAuthMiddleware } = require('../middleware/jwt');
 const router = express.Router();
+const User=require('../models/user');
 
 
 router.get('/form', async (req, res) => {
@@ -31,3 +32,5 @@ router.get('/form', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+module.exports=router;

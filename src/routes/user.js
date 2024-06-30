@@ -38,41 +38,7 @@ router.get('/form', jwtAuthMiddleware, async (req, res) => {
   }
 });
 
-// router.post('/update-profile', jwtAuthMiddleware,upload.single('profilePicture'), async (req, res) => {
-//   try {
-//     const email = req.user.email;
-//     const { name, place,collegeId, description, instagram, linkedin, github } = req.body;
-//     const user = await User.findOne({ email });
 
-//     if (!user) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-
-//     user.name = name;
-//     user.email=email;
-//     user.collegeId=collegeId;
-//     user.place = place;
-//     user.about = description;
-//     user.instagram = instagram;
-//     user.linkedin = linkedin;
-//     user.github = github;
-
-//     console.log("req.file is ",req.file);
-
-//     if (req.file) {
-//         console.log("user.img.data is ",user.img.data);
-//         console.log('req.file.data is ',req.file.data);
-//         user.img.data = fs.readFileSync(req.file.path);;
-//         user.img.contentType = req.file.mimetype;
-//       }
-      
-//     await user.save();
-//     res.redirect(`/form?email=${email}`);
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
 
 
 router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'), async (req, res) => {

@@ -11,7 +11,8 @@ exports.signup = async (req, res) => {
     const data = req.body;
     const email= req.body.email;
     const password=req.body.password;
-
+    // console.log(req.body, ' req.body');
+    const otp=req.body.otp;
     
 
 
@@ -20,24 +21,23 @@ exports.signup = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ error: 'Email already exists' });
     }
+    const recentOTP = await OTP.findOne({ email })
+      .sort({ createdAt: -1 })
+      .exec();
+      if(!recentOTP){
+        return res.status(400).json({message:'otp expired send new otp'});
+      }
+      // console.log('otp is '.otp,' and recentotp is ',recentOTP.otp);
+    if(otp!=recentOTP.otp){
+      return res.status(400).json({ error: 'OTP does not match' });
+    }
 
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Update the data object with the hashed password
     data.password = hashedPassword;
-
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    // const otpDocument = new OTP({
-    //     email,
-    //     otp,
-    //   });
-    const otpDocument = await OTP.create({ email, otp});
-      console.log('otpDocument is ',otpDocument)
-
-    //   otpDocument.save();
-
-      await sendVerificationEmail(email,otp)    ;
+    
 
     // Create a new User document using the Mongoose model
     const newUser = new User(data);
@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
 
   try {
     // Check if the email exists
-    const existingUser = await User.findOne({ email: req.body.email });
+    const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
       res.send("Email not found");
@@ -99,11 +99,28 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
   try {
-    // Clear the JWT token from the cookie
-    res.clearCookie('jwt');
-
-    // Redirect the user to the login page or any other desired page
-    res.redirect('/');
+    // Check if the user is logged in via Google
+    console.log('req.user is ',req.user);
+    if (req.user && req.user.provider === 'google') {
+      // Logout the user from Google
+      req.logout((err) => {
+        if (err) {
+          console.error('Error during Google logout:', err);
+          return res.status(500).send('Internal server error');
+        }
+        // Clear the Google OAuth2.0 access token from the session
+        req.session.destroy();
+        // Clear the JWT token from the cookie
+        res.clearCookie('jwt');
+        // Redirect the user to the login page or any other desired page
+        res.redirect('/');
+      });
+    } else {
+      // Clear the JWT token from the cookie
+      res.clearCookie('jwt');
+      // Redirect the user to the login page or any other desired page
+      res.redirect('/');
+    }
   } catch (err) {
     console.error('Error during logout:', err);
     res.status(500).send('Internal server error');
