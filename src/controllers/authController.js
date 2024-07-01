@@ -53,7 +53,8 @@ exports.signup = async (req, res) => {
 
     const token = generateToken(payload);
 
-    res.status(200).json({ message: "Successfully created account, please login again" });
+    // res.status(200).json({ message: "Successfully created account, please login again" });
+    res.render('/');
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -101,7 +102,7 @@ exports.logout = (req, res) => {
   try {
     // Check if the user is logged in via Google
     console.log('req.user is ',req.user);
-    if (req.user && req.user.provider === 'google') {
+    if (req.isAuthenticated()) {
       // Logout the user from Google
       req.logout((err) => {
         if (err) {
@@ -126,7 +127,6 @@ exports.logout = (req, res) => {
     res.status(500).send('Internal server error');
   }
 };
-
 function generateToken(payload) {
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
 }
