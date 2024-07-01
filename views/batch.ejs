@@ -39,35 +39,36 @@
     </div>
 
     <header>
-
-        <nav class="navbar">
-            <div class="logo">
-                <img src="images/bootcamp_logo_wo_bg.png" alt="">
-                <p>Bootcamp</p>
+        <nav>
+            <div class="brand">
+                <div class="logo">
+                    <a href=""><img src="images/bootcamp_logo_wo_bg.png" alt=""></a>
+                </div>
+                <div class="brand-name">Bootcamp</div>
             </div>
             <ul class="menu">
                 <li><a href="/home">HOME</a></li>
                 <li><a href="/about">ABOUT</a></li>
-                <li class="dropdown">
-                    <a href="javascript:void(0)" class="dropbtn">BATCH</a>
-                    <div class="dropdown-content">
-                        <a href="#">2026</a>
-                        <a href="#">2027</a>
-                        <a href="#">2028</a>
-                    </div>
+                <li>
+                    <a href="#">BATCHES
+                        <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/batch">2022-2026</a></li>
+                        <li><a href="/batch">2023-2027</a></li>
+                        <li><a href="/batch">2024-2028</a></li>
+                    </ul>
                 </li>
                 <li><a href="/society">SOCIETY</a></li>
-                <li><a href="/form">PROFILE</a></li>
+                <li><a href="/from">PROFILE</a></li>
+                <li><a href="/logout">LOGOUT</a></li>
             </ul>
-            <div class="menu-btn">
-                <i class="fa-solid fa-bars"></i>
-            </div>
+            <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
         </nav>
-
     </header>
 
     <main>
-        <div class="cards-container">
+
+        <div class="container">
             <% users.forEach((user)=> { %>
                 <div class="card">
                     <div class="cardface front">
@@ -131,6 +132,7 @@
                 <% }) %>
 
         </div>
+
     </main>
 
     <footer>
