@@ -50,9 +50,9 @@ router.get("/society", (req, res) => {
 router.get("/batch", async (req, res) => {
   if (req.isAuthenticated()) {
     try {
-      const users = await User.find(); // Fetch all users from MongoDB
-      // console.log(users.img);
+      const users = await User.find().sort('email');
       res.render('batch.ejs', { users });
+     
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });

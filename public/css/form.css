@@ -432,7 +432,7 @@ footer p i {
 
 .nav-bar {
  margin-bottom:85.9rem ;
- margin-top: 110px;
+ margin-top: 105px;
   height: 70px;
   background:#191919;
   position: fixed;
@@ -636,7 +636,8 @@ li{
 
 @media (max-width: 600px){
   .nav-bar{
-      margin-top: 3.5rem;
+          margin-top: 160px;
+          /* margin-top: 3.5rem; */
   }
 }
 
