@@ -559,6 +559,27 @@ nav ul li ul li a {
 li{
   font-size: 1.6rem;
 }
+.nav-list li.logout-btn {
+  float: right;
+  position: relative;
+}
+
+.nav-list li.logout-btn button {
+  display: block;
+  padding: 0 20px;
+  line-height: 70px;
+  background: #191919;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.6rem;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav-list li.logout-btn button:hover {
+  color: #a10a0a;
+}
 
 @media only screen and (max-width: 798px) {
   .nav-mobile {
