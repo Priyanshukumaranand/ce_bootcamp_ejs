@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Cards</title>
+
+    <!-- Link to connect CSS -->
+    <link rel="stylesheet" href="css/batch.css">
+
+    <!-- Link to connect Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+NL:wght@100..400&display=swap" rel="stylesheet">
+
+    <!-- Link to connect Awesomrfonts -->
+    <link rel="stylesheet" href="path/to/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Link to connect JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="background-container">
+        <div class="stars"></div>
+        <div class="twinkling"></div>
+    </div>
+
+    <header>
+        <nav>
+            <div class="brand">
+                <div class="logo">
+                    <a href=""><img src="images/bootcamp_logo_wo_bg.png" alt=""></a>
+                </div>
+                <div class="brand-name">Bootcamp</div>
+            </div>
+            <ul class="menu">
+                <li><a href="/home">HOME</a></li>
+                <li><a href="/about">ABOUT</a></li>
+                <li>
+                    <a href="#">BATCHES
+                        <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/batch">2022-2026</a></li>
+                        <li><a href="/batch">2023-2027</a></li>
+                        <li><a href="/batch">2024-2028</a></li>
+                    </ul>
+                </li>
+                <li><a href="/society">SOCIETY</a></li>
+                <li><a href="/form">PROFILE</a></li>
+                <li><a href="/logout">LOGOUT</a></li>
+            </ul>
+            <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+        </nav>
+    </header>
+
+    <main>
+
+        <div class="container">
+            
+            <% users.forEach((user)=> { %>
+                <div class="card">
+                    <div class="cardface front">
+                        <div class="image">
+                            <% if ( user.img.data===undefined || user.img.data===null) { %>
+                                <img src="uploads/noimage.png" alt="">
+                                <% } else { %>
+                                    <img src="data:image/<%= user.img.contentType %>;base64,<%= user.img.data.toString('base64') %>"
+                                        alt="">
+                                    <% } %>
+                        </div>
+                        <div class="info">
+                            <div class="text">
+                                <h1>
+                                    <%= user.username %>
+                                </h1>
+                                <h3>
+                                    <%= user.college_Id %>
+                                </h3>
+                            </div>
+                            <div class="links">
+                                <% if ( user.instagram !==undefined && user.instagram !==null && user.instagram !=='' )
+                                    { %>
+                                    <div class="link instagram">
+                                        <a href="<%= user.instagram %>" style="color:white;" target="_blank"><i
+                                                class="fa-brands fa-instagram"></i></a>
+                                    </div>
+                                    <% } %>
+                                    <% if ( user.github !==undefined && user.github !==null && user.github
+                                            !=='' ) { %>
+                                    <div class="link github">
+                                        <a href="<%= user.github %>" style="color:white;" target="_blank"> <i
+                                                class="fa-brands fa-github"></i></a>
+                                    </div>
+                                    <% } %>
+                                    <% if ( user.linkedin !==undefined && user.linkedin !==null &&
+                                            user.linkedin !=='' ) { %>
+                                            <div class="link linkedin">
+                                            <a href="<%= user.linkedin %>" style="color:white;"
+                                                target="_blank"> <i class="fa-brands fa-linkedin"></i></a>
+                                    </div>
+                                     <% } %>
+                                     <% if ( user.email !==undefined && user.email !==null &&
+                                     user.email !=='' ) { %>
+                                        <div class="link mail">
+                                            <a href="<%= user.email %>" style="color:white;"
+                                                target="_blank"> <i
+                                                class="fa-regular fa-envelope"></i></a>
+                                        </div>
+                                 <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cardface back" >
+                        <p>
+                            <%= user.about %>
+                        </p>
+
+                    </div>
+                </div>
+                <% }) %>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Made with <i class="fa-solid fa-heart"></i> by CE'26</p>
+    </footer>
+
+    <!-- Link to connect JS -->
+    <script src="batch.js"></script>
+
+</body>
+
+</html>
