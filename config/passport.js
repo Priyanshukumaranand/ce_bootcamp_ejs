@@ -10,7 +10,7 @@ const User = require("../src/models/user");
 passport.use(User.createStrategy());
 
 passport.serializeUser((user, done) => {
-  done(null, { id: user.id, username: user.username, email: user.email });
+  done(null, { id: user.id, name: user.name, email: user.email });
 });
 
 

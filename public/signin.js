@@ -32,8 +32,8 @@ document.querySelector(".sign-up-form").addEventListener("submit", function(even
 // const sign_in_btn = document.querySelector("#sign-in-btn");
 // const sign_up_btn = document.querySelector("#sign-up-btn");
 // const container = document.querySelector(".container");
-const google_signin1=document.querySelector(".login-with-google-btn");
-const google_signin2=document.querySelector(".login-with-google-btn");
+const google_signin1=document.querySelector("#Google-signin1");
+const google_signin2=document.querySelector("#Google-signin2");
 
 sign_up_btn.addEventListener("click", () => {
   container.classList.add("sign-up-mode");
