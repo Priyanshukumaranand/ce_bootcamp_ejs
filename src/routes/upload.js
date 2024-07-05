@@ -14,6 +14,7 @@ destination: path.join(__dirname, '../uploads/'),
   }
 });
 
+
 const upload = multer({
   storage: storage,
   limits: { fileSize: 3000000 }, // Limit file size to 3MB

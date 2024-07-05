@@ -1,16 +1,42 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 
 <head>
 	<meta charset="UTF-8" />
-	<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
-	<title>Sign in & Sign up Form</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/signin.css" />
-</head>
 
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+	<title>Sign in & Sign up Form</title>
+</head>
 <body>
-	
+	<nav>
+		<div class="brand">
+			<div class="logo">
+				<a href=""><img src="image/bootcamp_logo_wo_bg.png" alt=""></a>
+			</div>
+			<div class="brand-name">BOOTCAMP</div>
+		</div>
+		<ul class="menu">
+			<li><a href="/home">HOME</a></li>
+			<li><a href="/about">ABOUT</a></li>
+			<li>
+				<a href="#">BATCHES
+					<i class="fa-solid fa-angle-down"></i></a>
+				<ul class="dropdown">
+					<li><a href="/batch">2022-2026</a></li>
+					<li><a href="#">2023-2027</a></li>
+					<li><a href="#">2024-2028</a></li>
+				</ul>
+			</li>
+			<li><a href="/society">SOCIETY</a></li>
+			<li><a href="#">LOGIN</a></li>
+		</ul>
+		<div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+	</nav>
 	<div class="container">
 		<div class="forms-container">
 			<div class="signin-signup">
@@ -73,7 +99,7 @@
 				<div class="content">
 					<h3>Welcome to CE Bootcamp!!!</h3>
 					<p>
-						Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero, blanditiis.
+						Thank you for being part of our community.Let's continue this journey together!!
 					</p>
 					<button class="btn transparent" id="sign-up-btn">
 						Sign up
@@ -96,9 +122,11 @@
 			</div>
 		</div>
 	</div>
-
+	<footer>
+		<p>Made with <i class="fa-solid fa-heart"></i> by CE'26</p>
+	</footer>
 	
 </body>
-<script src="javascript/signin.js"></script>
+<script src="script/signin.js"></script>
 
 </html>

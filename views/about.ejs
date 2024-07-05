@@ -5,98 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/about.css">
     <title>About Page</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+NL:wght@100..400&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
+    
+    <link rel="stylesheet" href="path/to/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
 </head>
-<body>
+<body>   
+
     <div class="background-container">
         <div class="stars"></div>
-        <div class="twinkling"></div>  
+        <div class="twinkling"></div> 
     </div>
-    <div class="starss">
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-    </div>
-    <section class="nav-bar">
-        <div class="nav-container">
-          <div class="brand">
-            <a href="#"><img src="Photos/logo.png"></a>
-            <span class="logo-text">Bootcamp</span>
-          </div>
-          <nav>
-            <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
-            <ul class="nav-list">
-              <li>
-                <a href="/home">Home</a>
-              </li>
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Batches</a>
-                <ul class="nav-dropdown">
-                  <li>
-                    <a href="/batch">2022-2026</a>
-                  </li>
-                  <li>
-                    <a href="/batch">2023-2027</a>
-                  </li>
-                  <li>
-                    <a href="/batch">2024-2028</a>
-                  </li>
-                  
-                </ul>
-              </li>
-              <li>
-                <a href="/society">Society</a>
-              </li>
-              
-              <li>
-                <a href="/form">Profile</a>
-              </li>
-              <li>
-                <a href="/logout">Logout</a>
-              </li>
-              <!-- <li class="logout-btn">
-                <form action="/logout" method="POST">
-                    <button type="submit">Logout</button>
-                </form>
-            </li> -->
-            </ul>
-          </nav>
-        </div>
-      </section>
-       
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-   
 
+    <header>
+        <nav>
+            <div class="brand">
+                <div class="logo">
+                    <a href=""><img src="Photos/bootcamp_logo_wo_bg.png" alt=""></a>
+                </div>
+                <div class="brand-name">BOOTCAMP</div>
+            </div>
+            <ul class="menu">
+                <li><a href="/home">HOME</a></li>
+                <li><a href="#">ABOUT</a></li>
+                <li>
+                    <a href="#">BATCHES
+                        <i class="fa-solid fa-angle-down"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/batch">2022-2026</a></li>
+                        <li><a href="#">2023-2027</a></li>
+                        <li><a href="#">2024-2028</a></li>
+                    </ul>
+                </li>
+                <li><a href="/society">SOCIETY</a></li>
+                <li><a href="#" class="profile-dropdown">
+                    <div onclick="toggle()" class="profile-dropdown-btn">
+                      <div class="profile-img">
+                      </div> 
+            
+                      <span>
+                        <i class="fa-solid fa-angle-down"></i>
+                      </span>
+                    </div>
+                </a></li>
+                    <ul class="profile-dropdown-list">
+                      <li class="profile-dropdown-list-item">
+                        <a href="/form">
+                          <i class="fa-regular fa-user"></i>
+                          Edit Profile
+                        </a>
+                      </li>
+             
+                      <hr />
+            
+                      <li class="profile-dropdown-list-item">
+                        <a href="logout">
+                          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                          Log out
+                        </a>
+                      </li>
+                    </ul>
+
+            </ul>
+            <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+        </nav>
+
+    </header>
 
     <section class="about" id="about">
-        <div class="about-us">
-            <h1>ABOUT US</h1>
-            <div id="container">
-                <span id="text1"></span>
-                <span id="text2"></span>
-            </div>
-            
-            <svg id="filters">
-                <defs>
-                    <filter id="threshold">
-                        <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0
-                              0 1 0 0 0
-                              0 0 1 0 0
-                              0 0 0 255 -140" />
-                    </filter>
-                </defs>
-            </svg>
-            <p>A platform dedicated to introducing you to the talented computer engineering students who are shaping the future of technology. Our website is designed to showcase their skills, projects, and the passion they bring to their field.</p>
+<div class="about-us">
+        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+        <dotlottie-player class="lottier" src="https://lottie.host/8581d932-09cb-4729-9319-425f6e28751e/NHDEWhcd8R.json" background="transparent" speed="1"  loop autoplay></dotlottie-player>
+                  
+            <p class="first-para">A         platform dedicated to introducing you to the talented computer engineering students who are shaping the future of technology. Our website is designed to showcase their skills, projects, and the passion they bring to their field.</p>
             <p>Our mission is to provide a simple, user-friendly experience that highlights the incredible talents of our computer engineering students. We believe in the power of community and the importance of recognizing the hard work and love that goes into every project.</p>
         </div>
         <div class="team">
@@ -108,10 +107,10 @@
                 <h3>PRIYARANJAN KUMAR</h3>
                 <h4>Frontend Developer</h4>
                 <div class="icon">
-                   <a href="https://github.com/priyaranjan2902" target="_blank"> <i class="fa fa-github" ></i></a>
-                   <a href="https://in.linkedin.com/in/priyaranjan2902"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/priyaranjan2902/"target="_blank"> <i class="fa fa-instagram" ></i></a>
-                   <a href="rajprience2902@gmail.com"target="_blank"> <i class="fa fa-envelope" ></i></a>
+                   <a href="https://github.com/priyaranjan2902"> <i class="fa-brands fa-github"></i></a>
+                   <a href="https://in.linkedin.com/in/priyaranjan2902"> <i class="fa-brands fa-linkedin"></i></a>
+                   <a href="https://www.instagram.com/priyaranjan2902/"> <i class="fa-brands fa-instagram"></i></a>
+                   <a href="rajprience2902@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
                 </div>
             </div>
             <div class="card">
@@ -120,10 +119,10 @@
                 <h3>HARAPRIYA SWAIN</h3>
                 <h4>Frontend Developer</h4>
                 <div class="icon">
-                   <a href=""> <i class="fa fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/harapriya-swain-75632a256/"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/harapriya_17/"target="_blank"> <i class="fa fa-instagram" ></i></a>
-                   <a href=""> <i class="fa fa-envelope" ></i></a>
+                   <a href=""> <i class="fa-brands fa-github"></i></i></a>
+                   <a href="https://www.linkedin.com/in/harapriya-swain-75632a256/"> <i class="fa-brands fa-linkedin" ></i></a>
+                   <a href="https://www.instagram.com/harapriya_17/"> <i class="fa-brands fa-instagram" ></i></a>
+                   <a href=""> <i class="fa-solid fa-envelope" ></i></a>
                 </div>
             </div>
             <div class="card">
@@ -132,10 +131,10 @@
                 <h3>SUBHAM KUANAR</h3>
                 <h4>Frontend Developer</h4>
                 <div class="icon">
-                   <a href=""> <i class="fa fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/kuanarshubham/"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/shubhamkuanar/"target="_blank"> <i class="fa fa-instagram" ></i></a>
-                   <a href=""> <i class="fa fa-envelope" ></i></a>
+                   <a href=""> <i class="fa-brands fa-github" ></i></a>
+                   <a href="https://www.linkedin.com/in/kuanarshubham/"> <i class="fa-brands fa-linkedin" ></i></a>
+                   <a href="https://www.instagram.com/shubhamkuanar/"> <i class="fa-brands fa-instagram" ></i></a>
+                   <a href=""> <i class="fa-solid fa-envelope" ></i></a>
                 </div>
             </div>
             <div class="card">
@@ -144,10 +143,10 @@
                 <h3>SAUMYAJEET VARMA</h3>
                 <h4>Frontend Developer</h4>
                 <div class="icon">
-                   <a href="https://github.com/Saumyajeet-Varma"target="_blank"> <i class="fa fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/saumyajeet-varma-91bb4025a/"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/_saumyajeet_/"target="_blank"> <i class="fa fa-instagram" ></i></a>
-                   <a href=""> <i class="fa fa-envelope" ></i></a>
+                   <a href="https://github.com/Saumyajeet-Varma"> <i class="fa-brands fa-github" ></i></a>
+                   <a href="https://www.linkedin.com/in/saumyajeet-varma-91bb4025a/"> <i class="fa-brands fa-linkedin" ></i></a>
+                   <a href="https://www.instagram.com/_saumyajeet_/"> <i class="fa-brands fa-instagram" ></i></a>
+                   <a href=""> <i class="fa-solid fa-envelope" ></i></a>
                 </div>
             </div>
             <div class="card">
@@ -156,10 +155,10 @@
                 <h3>SWEDESHNA MISHRA</h3>
                 <h4>Frontend Developer</h4>
                 <div class="icon">
-                   <a href="https://github.com/SwedeshnaMishra"target="_blank"> <i class="fa fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/swedeshna-mishra-8a9567251/"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/__.swedeshna.__/"target="_blank"> <i class="fa fa-instagram" ></i></a>
-                   <a href="swedeshnamishra364@gmail.com"target="_blank"> <i class="fa fa-envelope" ></i></a>
+                   <a href="https://github.com/SwedeshnaMishra"> <i class="fa-brands fa-github" ></i></a>
+                   <a href="https://www.linkedin.com/in/swedeshna-mishra-8a9567251/"> <i class="fa-brands fa-linkedin" ></i></a>
+                   <a href="https://www.instagram.com/__.swedeshna.__/"> <i class="fa-brands fa-instagram" ></i></a>
+                   <a href="swedeshnamishra364@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
                 </div>
             </div>
             <div class="card">
@@ -168,10 +167,10 @@
                 <h3>BISWAJIT BHOI</h3>
                 <h4>UI/UX Designer</h4>
                 <div class="icon">
-                   <a href=""> <i class="fa fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/biswajit-bhoi-2537b5257/"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/biswajit.bhoi.125/"target="_blank"> <i class="fa fa-instagram" ></i></a>
-                   <a href=""> <i class="fa fa-envelope"target="_blank" ></i></a>
+                   <a href=""> <i class="fa-brands fa-github" ></i></a>
+                   <a href="https://www.linkedin.com/in/biswajit-bhoi-2537b5257/"> <i class="fa-brands fa-linkedin" ></i></a>
+                   <a href="https://www.instagram.com/biswajit.bhoi.125/"> <i class="fa-brands fa-instagram" ></i></a>
+                   <a href=""> <i class="fa-solid fa-envelope" ></i></a>
                 </div>
             </div>
             <div class="card">
@@ -180,10 +179,10 @@
                 <h3>JANMENJAY PANIGRAHI</h3>
                 <h4>Backend Developer</h4>
                 <div class="icon">
-                   <a href=""> <i class="fa fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/janmenjay-panigrahi-6806ab28a/"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href=""> <i class="fa fa-instagram" ></i></a>
-                   <a href=""> <i class="fa fa-envelope" ></i></a>
+                   <a href=""> <i class="fa-brands fa-github" ></i></a>
+                   <a href="https://www.linkedin.com/in/janmenjay-panigrahi-6806ab28a/"> <i class="fa-brands fa-linkedin" ></i></a>
+                   <a href=""> <i class="fa-brands fa-instagram" ></i></a>
+                   <a href=""> <i class="fa-solid fa-envelope" ></i></a>
                 </div>
             </div>
             <div class="card">
@@ -192,18 +191,18 @@
                 <h3>PRIYANSHU KUMAR ANAND</h3>
                 <h4>Backend Developer</h4>
                 <div class="icon">
-                   <a href="https://github.com/Priyanshukumaranand"target="_blank"> <i class="fa fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/priyanshu-kumar-anand-52b29825a"target="_blank"> <i class="fa fa-linkedin" ></i></a>
-                   <a href=""> <i class="fa fa-instagram"></i></a>
-                   <a href="priyanshukumaranandofficial@gmail.com"target="_blank"> <i class="fa fa-envelope" ></i></a>
+                   <a href="https://github.com/Priyanshukumaranand"> <i class="fa-brands fa-github" ></i></a>
+                   <a href="http://www.linkedin.com/in/priyanshu-kumar-anand-52b29825a"> <i class="fa-brands fa-linkedin" ></i></a>
+                   <!-- <a href="https://discord.com/users/1070009697605800088"> <i class="fa-brands fa-discord"></i></a> -->
+                   <a href="priyanshukumaranandofficial@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
                 </div>
             </div>
             </div>
         </div>
-    </section>  
+    </section> 
     <footer>
         <p>Made with <i class="fa-solid fa-heart"></i> by CE'26</p>
-    </footer>
-    <script src="javascript/about.js"></script>
+    </footer> 
+    <script src="script/about.js"></script>
 </body>
 </html>
