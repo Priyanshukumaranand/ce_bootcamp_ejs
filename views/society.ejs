@@ -43,7 +43,7 @@
                 </ul>
             </li>
             <li><a href="#">SOCIETY</a></li>
-            <% if (user) { %>
+            <% if (userjwt || usergoog) { %>
             <li><a href="#" class="profile-dropdown">
                 <div onclick="toggle()" class="profile-dropdown-btn">
                   <div class="profile-img">

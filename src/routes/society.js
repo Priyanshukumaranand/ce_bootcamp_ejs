@@ -3,8 +3,10 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/society', (req, res) => {
-  const user=req.user;
-  res.render('society',{user});
+  
+  const userjwt=req.cookies.jwt ;
+  const usergoog=req.user ;
+  res.render('society',{userjwt,usergoog});
 });
 
 module.exports = router;
