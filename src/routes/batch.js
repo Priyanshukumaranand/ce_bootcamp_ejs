@@ -31,7 +31,7 @@ router.get('/batch2028', jwtAuthMiddleware, async (req, res) => {
     const users = await User.find().sort('email');
     const userjwt=req.cookies.jwt ;
   const usergoog=req.user ;
-    res.render('batch2028.ejs', { users ,userjwt,usetgoog});
+    res.render('batch2028.ejs', { users ,userjwt,usergoog});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
