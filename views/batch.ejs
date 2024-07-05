@@ -63,10 +63,12 @@
                     </ul>
                 </li>
                 <li><a href="/society">SOCIETY</a></li>
-                <% if (user) { %>
+                <% if (user ) { %>
                    <li><a href="#" class="profile-dropdown">
                     <div onclick="toggle()" class="profile-dropdown-btn">
                       <div class="profile-img">
+
+                        
                       </div> 
             
                       <span>
@@ -112,6 +114,7 @@
         <div class="container">
             
             <% users.forEach((user)=> { %>
+                <% if(user.collegeId.substring(0, 4)=='b522'){ %>
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
@@ -171,7 +174,8 @@
 
                     </div>
                 </div>
-                <% }) %>
+                
+                <% }}) %>
 
         </div>
 

@@ -114,6 +114,7 @@
         <div class="container">
             
             <% users.forEach((user)=> { %>
+                <% if(user.collegeId.substring(0, 4)=='b523'){ %>
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
@@ -173,7 +174,7 @@
 
                     </div>
                 </div>
-                <% }) %>
+                <% }}) %>
 
         </div>
 
