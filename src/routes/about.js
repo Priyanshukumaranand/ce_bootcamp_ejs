@@ -3,7 +3,8 @@ const router = express.Router();
 
 
 router.get('/about', (req, res) => {
-  res.render('about');
+  const user=req.user;
+  res.render('about',{user});
 });
 
 module.exports = router;

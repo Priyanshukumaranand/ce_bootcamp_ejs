@@ -3,7 +3,8 @@ const router = express.Router();
 router.use(express.json());
 
 router.get('/society', (req, res) => {
-  res.render('society');
+  const user=req.user;
+  res.render('society',{user});
 });
 
 module.exports = router;

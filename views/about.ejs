@@ -50,11 +50,12 @@
                         <i class="fa-solid fa-angle-down"></i></a>
                     <ul class="dropdown">
                         <li><a href="/batch">2022-2026</a></li>
-                        <li><a href="#">2023-2027</a></li>
-                        <li><a href="#">2024-2028</a></li>
+                        <li><a href="/batch2027">2023-2027</a></li>
+                        <li><a href="/batch2028">2024-2028</a></li>
                     </ul>
                 </li>
                 <li><a href="/society">SOCIETY</a></li>
+                <% if (user) { %>
                 <li><a href="#" class="profile-dropdown">
                     <div onclick="toggle()" class="profile-dropdown-btn">
                       <div class="profile-img">
@@ -76,12 +77,15 @@
                       <hr />
             
                       <li class="profile-dropdown-list-item">
-                        <a href="logout">
+                        <a href="/logout">
                           <i class="fa-solid fa-arrow-right-from-bracket"></i>
                           Log out
                         </a>
                       </li>
                     </ul>
+                    <% } else { %>
+                        <li><a href="/">LOGIN</a></li>
+                        <% } %>
 
             </ul>
             <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
