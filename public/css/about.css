@@ -215,7 +215,7 @@ nav ul li ul li a:hover {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: url(Photos/GOJO.jpeg);
+  background: url(../uploads/noimage.png);
   background-size: cover;
 }
 
