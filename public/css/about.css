@@ -215,7 +215,7 @@ nav ul li ul li a:hover {
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: url(../uploads/noimage.png);
+  background: url(Photos/GOJO.jpeg);
   background-size: cover;
 }
 
@@ -391,7 +391,35 @@ margin-top: 10rem;
   text-align: center;
   color: aliceblue;
 }
-
+.team h2{
+  font-size: 5vw;
+  margin-bottom: 25px;
+  position: relative;
+  text-transform: uppercase;
+  background-image: linear-gradient(
+  -45deg,
+  #231557 0%,
+  #44107a 29%,
+  #ff1361 67%,
+  #fff800 100%
+);
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+animation: animated_text 6s ease-in-out infinite;
+-moz-animation: animated_text 6s ease-in-out infinite;
+-webkit-animation: animated_text 6s ease-in-out infinite;
+}
+@keyframes animated_text {
+0% { background-position: 0px 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0px 50%; }
+}
 .our-team{
   width: 100%;
   max-width: 1800px;

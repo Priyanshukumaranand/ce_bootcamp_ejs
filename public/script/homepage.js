@@ -5,8 +5,10 @@ const elts = {
 };
 
 const texts = [
-    "Welcome To",
-    "CE Bootcamp",
+    "Welcome" ,
+    "To",
+    "CE",
+    "Bootcamp",
 ];
 
 const morphTime = 1;
