@@ -566,7 +566,7 @@ font-size: 1rem;
 @media (max-width: 870px) {
   .container {
     min-height: 800px;
-    height: 110vh;
+    height: 100vh;
   }
   .signin-signup {
     width: 100%;
