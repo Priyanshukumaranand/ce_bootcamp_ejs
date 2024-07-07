@@ -26,6 +26,30 @@
   background-attachment: fixed;
 background-position: center;
 }
+#sendOTPBtn {
+  padding: 10px auto;
+  background-color: #17043a; /* Green background */
+  color: #fff; /* White text */
+  border: none;
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+  text-align: center;
+}
+
+#sendOTPBtn:hover {
+background-color: #059f26;
+cursor: pointer; /* Darker green on hover */
+}
+
+#otpInput {
+flex-grow: 1;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 4px; /* Rounded corners */
+
+
+}
 @keyframes move-background {
   from {
         -webkit-transform: translate3d(0px, 0px, 0px);
@@ -542,7 +566,7 @@ font-size: 1rem;
 @media (max-width: 870px) {
   .container {
     min-height: 800px;
-    height: 100vh;
+    height: 110vh;
   }
   .signin-signup {
     width: 100%;
@@ -667,7 +691,7 @@ font-size: 1rem;
   }
 
   .container.sign-up-mode:before {
-    bottom: 30%;
+    bottom: 20%;
     left: 50%;
   }
   .panel h3{
@@ -676,6 +700,10 @@ font-size: 1rem;
   .title{
     margin-top: 2.5rem;
   }
+  .right-panel{
+    margin-top: 26rem;
+  }
+ 
 
 }
 
