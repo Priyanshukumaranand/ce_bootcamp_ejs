@@ -49,6 +49,10 @@ var cards = document.querySelectorAll('.card');
 [...cards].forEach((card) => {
   card.addEventListener('click', function () {
       card.classList.toggle('is-flipped');
+
+      // Automatically flip the card back after 5 seconds
+      setTimeout(() => {
+          card.classList.toggle('is-flipped');
+      }, 7000); // 5000 milliseconds = 5 seconds
   });
 });
-

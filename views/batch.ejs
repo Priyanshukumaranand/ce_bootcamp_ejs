@@ -116,7 +116,7 @@
                 <div class="card">
                     <div class="cardface front">
                         <div class="image">
-                            <% if ( user.img.data===undefined || user.img.data===null) { %>
+                            <% if ( user.img?.data===undefined || user.img?.data===null) { %>
                                 <img src="uploads/noimage.png" alt="">
                                 <% } else { %>
                                     <img src="data:image/<%= user.img.contentType %>;base64,<%= user.img.data.toString('base64') %>"
@@ -129,7 +129,7 @@
                                     <%= user.name %>
                                 </h1>
                                 <h3>
-                                    <%= user.email.substring(0,7) %>
+                                    <%= user.email?.substring(0,7) %>
                                 </h3>
                             </div>
                             <div class="links">
@@ -166,6 +166,7 @@
                         </div>
                     </div>
                     <div class="cardface back" >
+                        <h3 id="about-me">About Me</h3>
                         <p>
                             <%= user.about %>
                         </p>

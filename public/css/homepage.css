@@ -759,7 +759,7 @@ main {
 
 .divider {
     display: flex;
-    width: 1150px;
+    width: 90%;
     height: 20px;
     align-items: center;
     justify-content: space-between;
@@ -836,6 +836,9 @@ footer p i {
 @media(max-width: 576px) {
     footer p {
         font-size: 15px;
+    }
+      .second-para{
+        display: none;
     }
 }
 
