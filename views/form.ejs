@@ -84,7 +84,7 @@
               <label for="profilePicture" id="profile_pic" >Profile Picture</label>
               <div class="upload-container" id="uploadContainer">
                 <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden >
-                <img id="profileImage" src="<%= user.profilePicture ? `/uploads/${user.profilePicture}` : 'https://robohash.org/random' %>" alt="Profile Picture" class="profile-img">
+                <img id="profileImage" src="<%= user.profilePicture ? `/uploads/${user.profilePicture}` : 'images/GOJO.jpeg' %>" alt="Profile Picture" class="profile-img">
                 <p class="upload-instructions">Drag here to upload</p>
               </div>
               <div class="upload-options">
@@ -102,7 +102,7 @@
             </div>
             <div class="form-group">
               <label for="description">About Me</label>
-              <textarea id="description" name="description" rows="4" required><%= user.about %></textarea>
+              <textarea id="description" name="description" rows="4" maxlength="200" required><%= user.about %></textarea>
               <div id="char-count">Characters remaining: <span id="remaining"></span></div>
             </div>
             <div class="form-group">
