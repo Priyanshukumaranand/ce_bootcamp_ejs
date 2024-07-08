@@ -1,7 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const passportLocalMongoose = require("passport-local-mongoose");
-const findOrCreate = require('mongoose-findorcreate');
+// const passportLocalMongoose = require("passport-local-mongoose");
+// const findOrCreate = require('mongoose-findorcreate');
 const User = require("../src/models/user");
 
 // Plugins for User model

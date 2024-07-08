@@ -99,7 +99,7 @@
 // }
 
 const User = require('../models/user');
-const path = require('path');
+// const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
