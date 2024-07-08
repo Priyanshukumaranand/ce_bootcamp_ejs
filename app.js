@@ -78,7 +78,8 @@ const userRoutes=require('./src/routes/user');
 const uploadRoutes = require('./src/routes/upload');
 const AuthorisationRoutes=require('./src/routes/Authorisation');
 const {generateOTP}=require('./src/routes/generateOTP');
-const forgetPasswordController=require('./src/controllers/forgetPasswordController')
+const forgetPasswordController=require('./src/controllers/forgetPasswordController');
+const errorRoutes=require('./src/routes/error');
 
 // app.use('/', indexRoutes);
 app.use('/', aboutRoutes);
@@ -92,6 +93,8 @@ app.use("/", uploadRoutes);
 app.post('/generate-otp', generateOTP);
 app.get('/forgetpassword', forgetPasswordController.getForgetPasswordPage);
 app.post('/forgetPassword',forgetPasswordController.postForgetPassword);
+app.get('/error',errorRoutes);
+
 
 
 
