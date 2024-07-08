@@ -38,7 +38,7 @@ passport.use(new GoogleStrategy({
   try {
     const email = profile.emails[0].value;
 
-    if (!email.endsWith('@iiit-bh.ac.in') || !email.startsWith('b5220')) {
+    if (!email.endsWith('@iiit-bh.ac.in') || !email.startsWith('b52')) {
       return cb(null, false, { message: 'Invalid email domain' });
     }
 
