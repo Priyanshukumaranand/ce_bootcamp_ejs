@@ -354,7 +354,7 @@ nav ul li ul li a:hover {
 
 .about-us{
 
-  width: 90%;
+  width: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -375,7 +375,7 @@ margin-top: 10rem;
   /* margin-top: 2vw; */
   font-size: 1.7vw;
   margin-bottom: 4vw;
-  font-family: "Alegreya sans", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 400;
   z-index: 10;
 }
@@ -421,7 +421,7 @@ animation: animated_text 6s ease-in-out infinite;
 100% { background-position: 0px 50%; }
 }
 .our-team{
-  width: 100%;
+  width: 90%;
   max-width: 1800px;
   height: 100%;
   margin: auto;
