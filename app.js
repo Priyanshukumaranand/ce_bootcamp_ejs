@@ -95,9 +95,11 @@ app.post('/generate-otp', generateOTP);
 app.get('/forgetpassword', forgetPasswordController.getForgetPasswordPage);
 app.post('/forgetPassword',forgetPasswordController.postForgetPassword);
 app.get('/error',errorRoutes);
-app.get('/error404',internalErrRoutes);
+// app.get('/error404',internalErrRoutes);
 
-
+app.all('*',(req,res)=>{
+  res.render('servererror');
+})
 
 // OTP verification 
 const OTP = require('./src/models/OTP');
