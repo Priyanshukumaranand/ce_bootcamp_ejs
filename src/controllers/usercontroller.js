@@ -157,7 +157,7 @@ exports.updateProfile = async (req, res) => {
     }
 
     await user.save();
-    res.redirect(`/form?email=${email}`);
+    res.redirect(`/home`);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
