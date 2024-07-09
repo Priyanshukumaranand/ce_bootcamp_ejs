@@ -580,7 +580,7 @@ footer p i {
 }
 
 .box2-text{
-    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-width: 0.7px;
     -webkit-text-stroke-color: gold;
 }
 
