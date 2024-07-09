@@ -37,6 +37,7 @@ function checkFileType(file, cb) {
 
 router.post('/upload', (req, res) => {
   if (req.isAuthenticated()) {
+    console.log("HERE");
     upload(req, res, (err) => {
       if (err) {
         res.send({ message: err });

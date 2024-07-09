@@ -74,7 +74,7 @@ router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'
       }
   
       await user.save();
-      res.redirect(`/form?email=${email}`);
+      res.redirect(`/home`);
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Internal Server Error' });
