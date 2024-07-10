@@ -80,6 +80,7 @@ const AuthorisationRoutes=require('./src/routes/Authorisation');
 const {generateOTP}=require('./src/routes/generateOTP');
 const forgetPasswordController=require('./src/controllers/forgetPasswordController');
 const errorRoutes=require('./src/routes/error');
+const internalErrRoutes=require('./src/routes/internalerror');
 
 // app.use('/', indexRoutes);
 app.use('/', aboutRoutes);
@@ -94,9 +95,11 @@ app.post('/generate-otp', generateOTP);
 app.get('/forgetpassword', forgetPasswordController.getForgetPasswordPage);
 app.post('/forgetPassword',forgetPasswordController.postForgetPassword);
 app.get('/error',errorRoutes);
+// app.get('/error404',internalErrRoutes);
 
-
-
+app.all('*',(req,res)=>{
+  res.render('servererror');
+})
 
 // OTP verification 
 const OTP = require('./src/models/OTP');

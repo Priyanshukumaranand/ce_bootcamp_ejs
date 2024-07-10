@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const home =require('../routes/user')
+// const home =require('../routes/user')
 const OTP=require('../models/OTP');
 const bcrypt=require('bcrypt');
 // const generateToken = require('../middleware/jwt');

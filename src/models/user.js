@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { type } = require("os");
+// const { type } = require("os");
 const bcrypt=require('bcrypt');
 const passportLocalMongoose = require("passport-local-mongoose");
 var findOrCreate = require('mongoose-findorcreate');

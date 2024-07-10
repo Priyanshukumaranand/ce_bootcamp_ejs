@@ -99,7 +99,7 @@
 // }
 
 const User = require('../models/user');
-const path = require('path');
+// const path = require('path');
 const multer = require('multer');
 
 const storage = multer.diskStorage({
@@ -157,7 +157,7 @@ exports.updateProfile = async (req, res) => {
     }
 
     await user.save();
-    res.redirect(`/form?email=${email}`);
+    res.redirect(`/home`);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });

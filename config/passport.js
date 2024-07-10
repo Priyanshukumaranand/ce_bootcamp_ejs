@@ -1,7 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const passportLocalMongoose = require("passport-local-mongoose");
-const findOrCreate = require('mongoose-findorcreate');
+// const passportLocalMongoose = require("passport-local-mongoose");
+// const findOrCreate = require('mongoose-findorcreate');
 const User = require("../src/models/user");
 
 // Plugins for User model
@@ -38,7 +38,7 @@ passport.use(new GoogleStrategy({
   try {
     const email = profile.emails[0].value;
 
-    if (!email.endsWith('@iiit-bh.ac.in') || !email.startsWith('b5220')) {
+    if (!email.endsWith('@iiit-bh.ac.in') || !email.startsWith('b52')) {
       return cb(null, false, { message: 'Invalid email domain' });
     }
 
