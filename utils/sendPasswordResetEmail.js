@@ -16,7 +16,7 @@ const sendPasswordResetEmail = async (email, resetToken) => {
     from: 'wasteemial9099@gmail.com',
     to: email,
     subject: 'Password Reset Instructions',
-    text: `Please click the following link to reset your password: http://127.0.0.1:3000/reset-password/${resetToken}`,
+    text: `Please click the following link to reset your password: https://ce-bootcamp-ejs.onrender.com/reset-password/${resetToken}`,
   };
 
   // Send the email

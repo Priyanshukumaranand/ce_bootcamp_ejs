@@ -1,6 +1,6 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const home =require('../routes/user')
+// const home =require('../routes/user')
 const OTP=require('../models/OTP');
 const bcrypt=require('bcrypt');
 // const generateToken = require('../middleware/jwt');
@@ -54,7 +54,7 @@ exports.signup = async (req, res) => {
     const token = generateToken(payload);
 
     // res.status(200).json({ message: "Successfully created account, please login again" });
-    res.render('/');
+    res.redirect('/');
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });

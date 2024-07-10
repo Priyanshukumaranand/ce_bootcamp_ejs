@@ -3,7 +3,11 @@ const router = express.Router();
 
 
 router.get('/about', (req, res) => {
-  res.render('about');
+  // console.log(req.cookies);
+  const userjwt=req.cookies.jwt ;
+  const usergoog=req.user ;
+  
+  res.render('about',{userjwt,usergoog});
 });
 
 module.exports = router;

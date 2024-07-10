@@ -4,70 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Edit Form</title>
+
+    <link rel="shortcut icon" href="uploads\favicon.png" type="image/x-icon">
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/form.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+       <!--Connect font ROBOTO-->
+   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+   rel="stylesheet">
+
+    <!-- Link to connect JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-    <section class="nav-bar">
-		<div class="nav-container">
-			<div class="brand">
-				<a href="#"><img src="images/logo.png"></a>
-				<span class="logo-text">Bootcamp</span>
-			</div>
-			<nav>
-				<div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
-				<ul class="nav-list">
-					<li>
-						<a href="/home">Home</a>
-					</li>
-                    <li>
-						<a href="/about">About</a>
-					</li>
-					<li>
-						<a href="#">Batches</a>
-						<ul class="nav-dropdown">
-							<li>
-								<a href="/batch">2022-2026</a>
-							</li>
-							<li>
-								<a href="/batch">2023-2027</a>
-							</li>
-							<li>
-								<a href="/batch">2024-2028</a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="/society">Society</a>
-					</li>
-					
-					<li>
-						<a href="#">Profile</a>
-					</li>
-					<li>
-						<a href="/logout">logout</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</section>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <div class="background-container">
-        <div class="stars"></div>
-        <div class="twinkling"></div>
-    </div>
-    <div class="starss">
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-        <div class="star"></div>
-    </div>
+    
+  <div class="background-container">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+</div>
+<header>
+  <nav>
+      <div class="brand">
+          <div class="logo">
+              <a href="/home"><img src="images/bootcamp_logo_wo_bg.png" alt=""></a>
+          </div>
+          <div class="brand-name">BOOTCAMP</div>
+      </div>
+      <ul class="menu">
+          <li><a href="/home">HOME</a></li>
+          <li><a href="/about">ABOUT</a></li>
+          <li>
+              <a href="#">BATCHES
+                  <i class="fa-solid fa-angle-down"></i></a>
+              <ul class="dropdown">
+                  <li><a href="/batch">2022-2026</a></li>
+                  <li><a href="/batch2027">2023-2027</a></li>
+                  <li><a href="/batch2028">2024-2028</a></li>
+              </ul>
+          </li>
+          <li><a href="/society">SOCIETY</a></li>
+          <li><a href="#" class="profile-dropdown">
+              <div onclick="toggle()" class="profile-dropdown-btn">
+                <div class="profile-img">
+                </div> 
+      
+                <span>
+                  <i class="fa-solid fa-angle-down"></i>
+                </span>
+              </div>
+          </a></li>
+              <ul class="profile-dropdown-list">
+                <li class="profile-dropdown-list-item">
+                  <a href="#">
+                    <i class="fa-regular fa-user"></i>
+                    Edit Profile
+                  </a>
+          
+              </li>
+       
+                <hr />
+      
+                <li class="profile-dropdown-list-item">
+                  <a href="/logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Log out
+                  </a>
+                </li>
+              </ul>
+      </ul>
+      <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+  </nav>
+</header>
+	<main>
     <div class="container">
         <div id="alertMessage" class="alert-message"></div>
 
@@ -76,13 +86,13 @@
             <div class="form-group">
               <label for="profilePicture" id="profile_pic" >Profile Picture</label>
               <div class="upload-container" id="uploadContainer">
-                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" >
-                <img id="profileImage" src="<%= user.profilePicture ? `/uploads/${user.profilePicture}` : 'https://robohash.org/random' %>" alt="Profile Picture" class="profile-img">
+                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden >
+                <img id="profileImage" src="<%= user.profilePicture ? `/uploads/${user.profilePicture}` : 'images/GOJO.jpeg' %>" alt="Profile Picture" class="profile-img">
                 <p class="upload-instructions">Drag here to upload</p>
               </div>
               <div class="upload-options">
                 <button type="button" id="browseButton">Browse Image</button>
-                <button type="button" id="saveImageButton" hidden>Save Image</button>
+                <button type="button" id="saveImageButton" >Save Image</button>
               </div>
             </div>
             <div class="form-group">
@@ -95,7 +105,8 @@
             </div>
             <div class="form-group">
               <label for="description">About Me</label>
-              <textarea id="description" name="description" rows="4" required><%= user.about %></textarea>
+              <textarea id="description" name="description" rows="4" maxlength="200" required><%= user.about %></textarea>
+              <div id="char-count">Characters remaining: <span id="remaining"></span></div>
             </div>
             <div class="form-group">
               <label for="instagram">Instagram</label>
@@ -109,15 +120,13 @@
               <label for="github">GitHub</label>
               <input type="url" id="github" name="github" value="<%= user.github %>" placeholder="https://github.com/yourprofile">
             </div>
-            
-            
             <button type="submit">Save Changes</button>
           </form>
-          <div class="form-group" >
-            <a href="/forgetPassword"  id="forgotPasswordLink">Forgot Password?</a>
-          </div>
-
     </div>
-  </body>
-  <script src="javascript/form.js"></script>
+    <footer>
+      <p>Made with <i class="fa-solid fa-heart"></i> by CE'26</p>
+  </footer>
+</main>
+  <script src="script/form.js"></script>
+</body>
 </html>

@@ -14,6 +14,7 @@ destination: path.join(__dirname, '../uploads/'),
   }
 });
 
+
 const upload = multer({
   storage: storage,
   limits: { fileSize: 3000000 }, // Limit file size to 3MB
@@ -36,6 +37,7 @@ function checkFileType(file, cb) {
 
 router.post('/upload', (req, res) => {
   if (req.isAuthenticated()) {
+    console.log("HERE");
     upload(req, res, (err) => {
       if (err) {
         res.send({ message: err });

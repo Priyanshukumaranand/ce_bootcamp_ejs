@@ -38,7 +38,8 @@ const jwtAuthMiddleware = (req, res, next) => {
       return next();
     } catch (err) {
       console.error(err);
-      return res.status(401).json({ error: 'Invalid token' });
+      // Replace the error message with a custom message
+      return res.status(401).render('error', { message: 'Invalid token. Please log in again.' });
     }
   }
 
@@ -48,9 +49,15 @@ const jwtAuthMiddleware = (req, res, next) => {
     return next();
   }
 
-  return res.status(401).json({ error: 'Unauthorized' });
+  // Replace the error message with a custom message and redirect to the "/" route
+  return res.status(401).render('error', { message: 'You are not logged in. Please log in to access this page.' }, (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Internal Server Error');
+    }
+    res.redirect('error');
+  });
 };
-
 
 const generateToken = (userData) => {
     // Generate a new JWT token using user data
