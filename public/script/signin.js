@@ -41,8 +41,8 @@ sign_in_btn.addEventListener("click", () => {
   container.classList.remove("sign-up-mode");
 });
 
-const rollIdPattern = /^b52\d{4}$/;
-const emailIdPattern=
+const rollIdPattern = /^b52\d{4}|b222003$/;
+
 
 document.querySelector(".sign-in-form").addEventListener("submit", function(event){
   const rollId = document.querySelector("#roll-id-sign-in").value;
@@ -89,7 +89,7 @@ const sendOTPBtn = document.getElementById('sendOTPBtn');
 const otpInput = document.getElementById('otpInput');
 const emailInput = document.getElementById('email-id');
 
-const emailPattern = /^b52\d{4}@iiit-bh.ac.in$/;
+const emailPattern = /^(b52\d{4}|b222003)@iiit-bh.ac.in$/;
 
 sendOTPBtn.addEventListener('click', async () => {
   try {
