@@ -9,7 +9,8 @@ router.get('/batch', jwtAuthMiddleware, async (req, res) => {
     const users = await User.find().sort('email');
     const userjwt=req.cookies.jwt ;
   const usergoog=req.user ;
-    res.render('batch.ejs', { users ,userjwt,usergoog});
+  const branchupgrade=['b222003@iiit-bh.ac.in']
+    res.render('batch.ejs', { users ,userjwt,usergoog,branchupgrade});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
