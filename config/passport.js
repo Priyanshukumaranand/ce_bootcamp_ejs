@@ -30,8 +30,8 @@ passport.deserializeUser(async (user, done) => {
 passport.use(new GoogleStrategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  // callbackURL: "http://localhost:3000/auth/google/home",
-  callbackURL: "https://ce-bootcamp-ejs.onrender.com/auth/google/home",
+  callbackURL: "http://localhost:3000/auth/google/home",
+  // callbackURL: "https://ce-bootcamp-ejs.onrender.com/auth/google/home",
   userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
   scope: ['profile', 'email']
 }, async (accessToken, refreshToken, profile, cb) => {
