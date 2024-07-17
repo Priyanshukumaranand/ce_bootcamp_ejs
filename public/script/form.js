@@ -1,3 +1,104 @@
+document.addEventListener("DOMContentLoaded", function() {
+    // Toggle profile dropdown
+    document.querySelector('.profile-dropdown-btn').addEventListener('click', function() {
+        const profileDropdownList = document.querySelector('.profile-dropdown-list');
+        profileDropdownList.style.display = profileDropdownList.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Handle file upload
+    const profilePictureInput = document.getElementById('profilePicture');
+    const profileImage = document.getElementById('profileImage');
+    const uploadContainer = document.getElementById('uploadContainer');
+    const browseButton = document.getElementById('browseButton');
+    const saveImageButton = document.getElementById('saveImageButton');
+
+    browseButton.addEventListener('click', function() {
+        profilePictureInput.click();
+    });
+
+    profilePictureInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profileImage.src = e.target.result;
+                saveImageButton.hidden = false;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    uploadContainer.addEventListener('dragover', function(event) {
+        event.preventDefault();
+    });
+
+    uploadContainer.addEventListener('drop', function(event) {
+        event.preventDefault();
+        const file = event.dataTransfer.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profileImage.src = e.target.result;
+                saveImageButton.hidden = false;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Character count for textarea
+    const descriptionInput = document.getElementById('description');
+    const charCount = document.getElementById('char-count');
+    const remainingCharsSpan = document.getElementById('remaining');
+
+    descriptionInput.addEventListener('input', function() {
+        const maxLength = descriptionInput.getAttribute('maxlength');
+        const currentLength = descriptionInput.value.length;
+        remainingCharsSpan.textContent = maxLength - currentLength;
+    });
+
+    // Initialize remaining character count on page load
+    remainingCharsSpan.textContent = descriptionInput.getAttribute('maxlength') - descriptionInput.value.length;
+
+    // Handle form submission (optional example)
+    document.getElementById('saveImageButton').addEventListener('click', function (event) {
+        event.preventDefault();
+        const formData = new FormData(document.getElementById('profileForm'));
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }); // Toggle menu on mobile
+    const menuBtn = document.querySelector('.menu-btn');
+    const menu = document.querySelector('.menu');
+
+    menuBtn.addEventListener('click', function() {
+        menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    // Close profile dropdown on click outside
+    document.addEventListener('click', function(event) {
+        const profileDropdown = document.querySelector('.profile-dropdown');
+        const isClickInside = profileDropdown.contains(event.target);
+
+        if (!isClickInside) {
+            document.querySelector('.profile-dropdown-list').style.display = 'none';
+        }
+    });
+});
+
+
+
+
+
+
+
 $(document).ready(function () {
     $('.menu-btn').click(function () {
         $('.navbar .menu').toggleClass('active');
@@ -29,96 +130,16 @@ $(document).ready(function () {
         });
     });
   })(jQuery);
-document.getElementById('browseButton').addEventListener('click', function() {
-    document.getElementById('profilePicture').click();
-});
+  
 
-document.getElementById('profilePicture').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profileImage').src = e.target.result;
-            document.getElementById('saveImageButton').hidden = false;
-            // Show the alert message
-            const alertMessage = document.getElementById('alertMessage');
-            alertMessage.textContent = 'Profile picture uploaded!';
-            alertMessage.classList.add('show');
-            setTimeout(function() {
-                alertMessage.classList.remove('show');
-            }, 3000); // Hide the alert after 3 seconds (3000 milliseconds)
-        }
-        reader.readAsDataURL(file);
-    }
-});
+// For Profile icon
+let profileDropdownList = document.querySelector(".profile-dropdown-list");
+let btn = document.querySelector(".profile-dropdown-btn");
 
-document.getElementById('saveImageButton').addEventListener('click', function (event) {
-    event.preventDefault();
-    const formData = new FormData(document.getElementById('profileForm'));
-    fetch('/upload', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            alert(data.message);
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
+let classList = profileDropdownList.classList;
 
-document.getElementById('uploadContainer').addEventListener('dragover', function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.style.borderColor = '#007bff';
-});
+const toggle = () => classList.toggle("active");
 
-document.getElementById('uploadContainer').addEventListener('dragleave', function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.style.borderColor = '#444';
-});
-
-document.getElementById('uploadContainer').addEventListener('drop', function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.style.borderColor = '#444';
-    const file = event.dataTransfer.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('profileImage').src = e.target.result;
-            document.getElementById('saveImageButton').hidden = false;
-            // Show the alert message
-            const alertMessage = document.getElementById('alertMessage');
-            alertMessage.textContent = 'Profile picture uploaded!';
-            alertMessage.classList.add('show');
-            setTimeout(function() {
-                alertMessage.classList.remove('show');
-            }, 3000); // Hide the alert after 3 seconds (3000 milliseconds)
-        }
-        reader.readAsDataURL(file);
-    }
-});
-document.addEventListener('DOMContentLoaded', function () {
-    var textarea = document.getElementById('description');
-    var charCount = document.getElementById('remaining');
-    var maxChars = parseInt(textarea.getAttribute('maxlength'));
-
-    updateCharCount();
-
-    textarea.addEventListener('input', function () {
-        updateCharCount();
-    });
-
-    function updateCharCount() {
-        var remainingChars = maxChars - textarea.value.length;
-        charCount.textContent = remainingChars + " out of " + maxChars;
-        if (remainingChars < 0) {
-            charCount.style.color = 'red'; // Change color to indicate exceeding limit
-        } else {
-            charCount.style.color = ''; // Reset color
-        }
-    }
+window.addEventListener("click", function (e) {
+  if (!btn.contains(e.target)) classList.remove("active");
 });

@@ -13,7 +13,25 @@ const storage = multer.diskStorage({
     }
   });
 
-const upload = multer({ storage });
+const upload = multer({ storage ,
+  limits: { fileSize: 3000000 }, // Limit file size to 3MB
+  fileFilter: (req, file, cb) => {
+    checkFileType(file, cb);
+  }
+});
+
+function checkFileType(file, cb) {
+  const filetypes = /jpeg|jpg|png|gif/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    return cb(null, true);
+  } else {
+    cb('Error: Images Only!');
+  }
+}
+
 router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 router.get('/form', jwtAuthMiddleware, async (req, res) => {
@@ -71,6 +89,14 @@ router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'
       if (req.file) {
         user.img.data = fs.readFileSync(req.file.path);
         user.img.contentType = req.file.mimetype;
+        fs.unlink(req.file.path, (err) => {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.log('File deleted successfully!');
+          return;
+        });
       }
   
       await user.save();
