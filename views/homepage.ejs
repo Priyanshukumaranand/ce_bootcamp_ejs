@@ -69,8 +69,11 @@
                 <% if (userjwt || usergoog) { %>
                 <li><a href="#" class="profile-dropdown">
                     <div onclick="toggle()" class="profile-dropdown-btn">
-                      <div class="profile-img">
-                        
+                        <%if(usergoog?.img!=undefined){ %>
+                            <div class="profile-img" style=" background: url(data:image/<%= usergoog.img.contentType %>;base64,<%= usergoog.img.data.toString('base64') %>); background-size: cover;">
+                      <% }else {%>  
+                           <div class="profile-img" style=" background: url(../uploads/noimage.png); background-size: cover;">
+                        <% } %>
                       </div> 
             
                       <span>
