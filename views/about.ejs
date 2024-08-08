@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="ybsJlC6CqnYjll1hjpT-ObwFRRwe-DEFf8kyGfvefR8" />
@@ -16,24 +17,26 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playwrite+NL:wght@100..400&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
-    rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="path/to/fontawesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
-    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
 </head>
-<body>   
+
+<body>
 
     <div class="background-container">
         <div class="stars"></div>
-        <div class="twinkling"></div> 
+        <div class="twinkling"></div>
     </div>
 
     <header>
@@ -58,32 +61,38 @@
                 </li>
                 <li><a href="/society">SOCIETY</a></li>
                 <% if (userjwt || usergoog) { %>
-                <li><a href="#" class="profile-dropdown">
-                    <div onclick="toggle()" class="profile-dropdown-btn">
-                      <div class="profile-img">
-                      </div> 
-            
-                      <span>
-                        <i class="fa-solid fa-angle-down"></i>
-                      </span>
-                    </div>
-                </a></li>
+                    <li><a href="#" class="profile-dropdown">
+                            <div onclick="toggle()" class="profile-dropdown-btn">
+                                <% if(usergoog?.img!=undefined){ %>
+                                    <div class="profile-img"
+                                        style=" background: url(data:image/<%= usergoog.img.contentType %>;base64,<%= usergoog.img.data.toString('base64') %>); background-size: cover;">
+                                        <% }else {%>
+                                            <div class="profile-img"
+                                                style=" background: url(../uploads/noimage.png); background-size: cover;">
+                                                <% } %>
+                                            </div>
+
+                                            <span>
+                                                <i class="fa-solid fa-angle-down"></i>
+                                            </span>
+                                    </div>
+                        </a></li>
                     <ul class="profile-dropdown-list">
-                      <li class="profile-dropdown-list-item">
-                        <a href="/form">
-                          <i class="fa-regular fa-user"></i>
-                          Edit Profile
-                        </a>
-                      </li>
-             
-                      <hr />
-            
-                      <li class="profile-dropdown-list-item">
-                        <a href="/logout">
-                          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                          Log out
-                        </a>
-                      </li>
+                        <li class="profile-dropdown-list-item">
+                            <a href="/form">
+                                <i class="fa-regular fa-user"></i>
+                                Edit Profile
+                            </a>
+                        </li>
+
+                        <hr />
+
+                        <li class="profile-dropdown-list-item">
+                            <a href="/logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                Log out
+                            </a>
+                        </li>
                     </ul>
                     <% } else { %>
                         <li><a href="/">LOGIN</a></li>
@@ -96,119 +105,146 @@
     </header>
 
     <section class="about" id="about">
-<div class="about-us">
-        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+        <div class="about-us">
+            <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+                type="module"></script>
 
-        <dotlottie-player class="lottier" src="https://lottie.host/8581d932-09cb-4729-9319-425f6e28751e/NHDEWhcd8R.json" background="transparent" speed="1"  loop autoplay></dotlottie-player>
-                  
-            <p class="first-para">A         platform dedicated to introducing you to the talented computer engineering students who are shaping the future of technology. Our website is designed to showcase their skills, projects, and the passion they bring to their field.</p>
-            <p>Our mission is to provide a simple, user-friendly experience that highlights the incredible talents of our computer engineering students. We believe in the power of community and the importance of recognizing the hard work and love that goes into every project.</p>
+            <dotlottie-player class="lottier"
+                src="https://lottie.host/8581d932-09cb-4729-9319-425f6e28751e/NHDEWhcd8R.json" background="transparent"
+                speed="1" loop autoplay></dotlottie-player>
+
+            <p class="first-para">A platform dedicated to introducing you to the talented computer engineering students
+                who are shaping the future of technology. Our website is designed to showcase their skills, projects,
+                and the passion they bring to their field.</p>
+            <p>Our mission is to provide a simple, user-friendly experience that highlights the incredible talents of
+                our computer engineering students. We believe in the power of community and the importance of
+                recognizing the hard work and love that goes into every project.</p>
         </div>
         <div class="team">
             <h2>Our Team</h2>
             <div class="our-team">
                 <div class="card">
-                <img class="bg" src="Photos/bg.png" >
-                <img class="one" src="Photos/PRIYARANJAN.png" >
-                <h3>PRIYARANJAN KUMAR</h3>
-                <h4>Frontend Developer</h4>
-                <div class="icon">
-                   <a href="https://github.com/priyaranjan2902" target="_blank"> <i class="fa-brands fa-github"></i></a>
-                   <a href="https://in.linkedin.com/in/priyaranjan2902" target="_blank"> <i class="fa-brands fa-linkedin"></i></a>
-                   <a href="https://www.instagram.com/priyaranjan2902/" target="_blank"> <i class="fa-brands fa-instagram"></i></a>
-                   <a href="mailto:rajprience2902@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/PRIYARANJAN.png">
+                    <h3>PRIYARANJAN KUMAR</h3>
+                    <h4>Frontend Developer</h4>
+                    <div class="icon">
+                        <a href="https://github.com/priyaranjan2902" target="_blank"> <i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="https://in.linkedin.com/in/priyaranjan2902" target="_blank"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/priyaranjan2902/" target="_blank"> <i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:rajprience2902@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="bg" src="Photos/bg.png" >
-                <img class="one" src="Photos/HARAPRIYA.png" >
-                <h3>HARAPRIYA SWAIN</h3>
-                <h4>Frontend Developer</h4>
-                <div class="icon">
-                   <a href="https://github.com/harapriya1704" target="_blank"> <i class="fa-brands fa-github"></i></i></a>
-                   <a href="https://www.linkedin.com/in/harapriya-swain-75632a256/" target="_blank"> <i class="fa-brands fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/harapriya_17/" target="_blank"> <i class="fa-brands fa-instagram" ></i></a>
-                   <a href="mailto:harapriyas1704@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
+                <div class="card">
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/HARAPRIYA.png">
+                    <h3>HARAPRIYA SWAIN</h3>
+                    <h4>Frontend Developer</h4>
+                    <div class="icon">
+                        <a href="https://github.com/harapriya1704" target="_blank"> <i
+                                class="fa-brands fa-github"></i></i></a>
+                        <a href="https://www.linkedin.com/in/harapriya-swain-75632a256/" target="_blank"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/harapriya_17/" target="_blank"> <i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:harapriyas1704@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="bg" src="Photos/bg.png" >       
-                <img class="one" src="Photos/shubham_new.png" >
-                <h3>SUBHAM KUANAR</h3>
-                <h4>Frontend Developer</h4>
-                <div class="icon">
-                   <a href="https://github.com/kuanarshubham"> <i class="fa-brands fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/kuanarshubham/" target="_blank"> <i class="fa-brands fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/shubhamkuanar/" target="_blank"> <i class="fa-brands fa-instagram" ></i></a>
-                   <a href="mailto:kuanarshubham@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
+                <div class="card">
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/shubham_new.png">
+                    <h3>SUBHAM KUANAR</h3>
+                    <h4>Frontend Developer</h4>
+                    <div class="icon">
+                        <a href="https://github.com/kuanarshubham"> <i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/kuanarshubham/" target="_blank"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/shubhamkuanar/" target="_blank"> <i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:kuanarshubham@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="bg" src="Photos/bg.png" >
-                <img class="one" src="Photos/SAUMYAJEET.png" >
-                <h3>SAUMYAJEET VARMA</h3>
-                <h4>Frontend Developer</h4>
-                <div class="icon">
-                   <a href="https://github.com/Saumyajeet-Varma" target="_blank"> <i class="fa-brands fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/saumyajeet-varma-91bb4025a/" target="_blank"> <i class="fa-brands fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/_saumyajeet_/" target="_blank"> <i class="fa-brands fa-instagram" ></i></a>
-                   <a href="mailto:saumyajeetv@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
+                <div class="card">
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/SAUMYAJEET.png">
+                    <h3>SAUMYAJEET VARMA</h3>
+                    <h4>Frontend Developer</h4>
+                    <div class="icon">
+                        <a href="https://github.com/Saumyajeet-Varma" target="_blank"> <i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/saumyajeet-varma-91bb4025a/" target="_blank"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/_saumyajeet_/" target="_blank"> <i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:saumyajeetv@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="bg" src="Photos/bg.png" >
-                <img class="one" src="Photos/SWEDESHNA.png" >
-                <h3>SWEDESHNA MISHRA</h3>
-                <h4>Frontend Developer</h4>
-                <div class="icon">
-                   <a href="https://github.com/SwedeshnaMishra" target="_blank"> <i class="fa-brands fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/swedeshna-mishra-8a9567251/" target="_blank"> <i class="fa-brands fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/__.swedeshna.__/" target="_blank"> <i class="fa-brands fa-instagram" ></i></a>
-                   <a href="mailto:swedeshnamishra364@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
+                <div class="card">
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/SWEDESHNA.png">
+                    <h3>SWEDESHNA MISHRA</h3>
+                    <h4>Frontend Developer</h4>
+                    <div class="icon">
+                        <a href="https://github.com/SwedeshnaMishra" target="_blank"> <i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/swedeshna-mishra-8a9567251/" target="_blank"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/__.swedeshna.__/" target="_blank"> <i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:swedeshnamishra364@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="bg" src="Photos/bg.png" >
-                <img class="one" src="Photos/BISWAJIT.png" >
-                <h3>BISWAJIT BHOI</h3>
-                <h4>UI/UX Designer</h4>
-                <div class="icon">
-                   <a href=""> <i class="fa-brands fa-github" target="_blank" ></i></a>
-                   <a href="https://www.linkedin.com/in/biswajit-bhoi-2537b5257/" target="_blank"> <i class="fa-brands fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/biswajit.bhoi.125/" target="_blank"> <i class="fa-brands fa-instagram" ></i></a>
-                   <a href="mailto:b522016@iiit-bh.ac.in"> <i class="fa-solid fa-envelope" ></i></a>
+                <div class="card">
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/BISWAJIT.png">
+                    <h3>BISWAJIT BHOI</h3>
+                    <h4>UI/UX Designer</h4>
+                    <div class="icon">
+                        <a href=""> <i class="fa-brands fa-github" target="_blank"></i></a>
+                        <a href="https://www.linkedin.com/in/biswajit-bhoi-2537b5257/" target="_blank"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/biswajit.bhoi.125/" target="_blank"> <i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="mailto:b522016@iiit-bh.ac.in"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="bg" src="Photos/bg.png" >
-                <img class="one" src="Photos/JANMANJEY.png" >
-                <h3>JANMENJAY PANIGRAHI</h3>
-                <h4>Backend Developer</h4>
-                <div class="icon">
-                   <a href="https://github.com/Janmenjay30"> <i class="fa-brands fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/janmenjay-panigrahi-6806ab28a/"> <i class="fa-brands fa-linkedin" ></i></a>
-                   <a href="https://www.instagram.com/___janmejay__/"> <i class="fa-brands fa-instagram" ></i></a>
-                   <a href="janmejaypanigrahi22@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
+                <div class="card">
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/JANMANJEY.png">
+                    <h3>JANMENJAY PANIGRAHI</h3>
+                    <h4>Backend Developer</h4>
+                    <div class="icon">
+                        <a href="https://github.com/Janmenjay30"> <i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/janmenjay-panigrahi-6806ab28a/"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/___janmejay__/"> <i class="fa-brands fa-instagram"></i></a>
+                        <a href="janmejaypanigrahi22@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
-            <div class="card">
-                <img class="bg" src="Photos/bg.png" >
-                <img class="one" src="Photos/PRIYANSHU.png" >
-                <h3>PRIYANSHU KUMAR ANAND</h3>
-                <h4>Backend Developer</h4>
-                <div class="icon">
-                   <a href="https://github.com/Priyanshukumaranand" target="_blank"> <i class="fa-brands fa-github" ></i></a>
-                   <a href="https://www.linkedin.com/in/priyanshu-kumar-anand-52b29825a" target="_blank"> <i class="fa-brands fa-linkedin" ></i></a>
-                   <!-- <a href="https://discord.com/users/1070009697605800088"> <i class="fa-brands fa-discord"></i></a> -->
-                   <a href="mailto:priyanshukumaranandofficial@gmail.com"> <i class="fa-solid fa-envelope" ></i></a>
+                <div class="card">
+                    <img class="bg" src="Photos/bg.png">
+                    <img class="one" src="Photos/PRIYANSHU.png">
+                    <h3>PRIYANSHU KUMAR ANAND</h3>
+                    <h4>Backend Developer</h4>
+                    <div class="icon">
+                        <a href="https://github.com/Priyanshukumaranand" target="_blank"> <i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/priyanshu-kumar-anand-52b29825a" target="_blank"> <i
+                                class="fa-brands fa-linkedin"></i></a>
+                        <!-- <a href="https://discord.com/users/1070009697605800088"> <i class="fa-brands fa-discord"></i></a> -->
+                        <a href="mailto:priyanshukumaranandofficial@gmail.com"> <i class="fa-solid fa-envelope"></i></a>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
-    </section> 
+    </section>
     <footer>
         <p>Made with <i class="fa-solid fa-heart"></i> by CE'26</p>
-    </footer> 
+    </footer>
     <script src="script/about.js"></script>
 </body>
+
 </html>

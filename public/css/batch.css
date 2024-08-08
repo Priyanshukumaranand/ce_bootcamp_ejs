@@ -231,8 +231,7 @@ nav {
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    background: url(../uploads/noimage.png);
-    background-size: cover;
+   
   }
   
   .profile-dropdown-btn span {
