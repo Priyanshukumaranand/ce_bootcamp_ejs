@@ -66,9 +66,9 @@ document.querySelector(".sign-up-form").addEventListener("submit", function(even
 const google_signin1=document.querySelector("#Google-signin1");
 const google_signin2=document.querySelector("#Google-signin2");
 
-// sign_up_btn.addEventListener("click", () => {
-//   container.classList.add("sign-up-mode");
-// });
+sign_up_btn.addEventListener("click", () => {
+  container.classList.add("sign-up-mode");
+});
 
 sign_in_btn.addEventListener("click", () => {
   container.classList.remove("sign-up-mode");
