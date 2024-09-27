@@ -2,9 +2,14 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 const { jwtAuthMiddleware } = require('../middleware/jwt');
+const rateLimit = require('express-rate-limit');
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
 
-router.get('/batch', jwtAuthMiddleware, async (req, res) => {
+router.get('/batch', limiter, jwtAuthMiddleware, async (req, res) => {
   try {
     const users = await User.find().sort('email');
     const userjwt=req.cookies.jwt ;
@@ -16,7 +21,7 @@ router.get('/batch', jwtAuthMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-router.get('/batch2027', jwtAuthMiddleware, async (req, res) => {
+router.get('/batch2027', limiter, jwtAuthMiddleware, async (req, res) => {
   try {
     const users = await User.find().sort('email');
     const userjwt=req.cookies.jwt ;
@@ -27,7 +32,7 @@ router.get('/batch2027', jwtAuthMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-router.get('/batch2028', jwtAuthMiddleware, async (req, res) => {
+router.get('/batch2028', limiter, jwtAuthMiddleware, async (req, res) => {
   try {
     const users = await User.find().sort('email');
     const userjwt=req.cookies.jwt ;
