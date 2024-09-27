@@ -1,10 +1,16 @@
 const express = require('express');
-// const { jwtAuthMiddleware } = require('../middleware/jwt');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const User=require('../models/user');
 
+// Configure rate limiter: maximum of 100 requests per 15 minutes
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+});
 
-router.get('/form', async (req, res) => {
+// Apply rate limiter to the /form route
+router.get('/form', limiter, async (req, res) => {
     try{
         
         const user=req.user;
