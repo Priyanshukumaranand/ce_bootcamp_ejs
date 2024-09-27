@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require('express');
 const bodyParser = require("body-parser");
+const lusca = require('lusca');
 
 const mongoose = require("mongoose");
 const session = require('express-session');
@@ -27,7 +28,7 @@ app.use(session({
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(lusca.csrf());
 
 const flash = require('connect-flash');
 app.use(flash());
