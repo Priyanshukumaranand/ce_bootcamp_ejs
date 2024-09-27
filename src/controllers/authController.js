@@ -66,7 +66,7 @@ exports.login = async (req, res) => {
 
   try {
     // Check if the email exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: { $eq: email } });
 
     if (!existingUser) {
       res.send("Email not found");
