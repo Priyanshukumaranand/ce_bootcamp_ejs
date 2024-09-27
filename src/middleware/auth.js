@@ -41,7 +41,7 @@ const User = require('../models/user'); // Adjust the path as needed
 
 passport.use(new LocalStrategy(async (email, password, done) => {
     try {
-        console.log('Received credentials:', email, password);
+        console.log('Received credentials for email:', email);
         const user = await User.findOne({ email });
         if (!user)
             return done(null, false, { message: 'Incorrect email.' });
