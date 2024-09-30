@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require('express');
 const bodyParser = require("body-parser");
 const lusca = require('lusca');
-
+const RateLimit = require('express-rate-limit');
 const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require("./config/passport");
@@ -94,7 +94,11 @@ app.use('/', userRoutes);
 app.use("/", uploadRoutes);
 app.post('/generate-otp', generateOTP);
 app.get('/forgetpassword', forgetPasswordController.getForgetPasswordPage);
-app.post('/forgetPassword',forgetPasswordController.postForgetPassword);
+const forgetPasswordLimiter = RateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5, // limit each IP to 5 requests per windowMs
+});
+app.post('/forgetPassword', forgetPasswordLimiter, forgetPasswordController.postForgetPassword);
 app.get('/error',errorRoutes);
 // app.get('/error404',internalErrRoutes);
 
