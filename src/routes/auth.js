@@ -1,12 +1,18 @@
 const express = require('express');
 const router = express.Router();
-// const userController = require('../controllers/usercontroller');
+const rateLimit = require('express-rate-limit');
 const authController=require('../controllers/authController')
 const User=require('../models/user');
 const bcrypt=require('bcrypt');
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
+// Set up rate limiter: maximum of 100 requests per 15 minutes
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
+
+router.post('/signup', limiter, authController.signup);
+router.post('/login', limiter, authController.login);
 router.get('/logout', authController.logout);
 
 // routes/auth.js
