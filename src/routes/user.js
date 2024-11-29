@@ -87,9 +87,14 @@ router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'
       user.github = github;
   
       if (req.file) {
-        user.img.data = fs.readFileSync(req.file.path);
+        const safeRoot = path.resolve('./uploads/');
+        const filePath = path.resolve(req.file.path);
+        if (!filePath.startsWith(safeRoot)) {
+          throw new Error('Invalid file path');
+        }
+        user.img.data = fs.readFileSync(filePath);
         user.img.contentType = req.file.mimetype;
-        fs.unlink(req.file.path, (err) => {
+        fs.unlink(filePath, (err) => {
           if (err) {
             console.log(err);
             return;
