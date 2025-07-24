@@ -23,7 +23,11 @@ app.use(session({
     secret: "Our little secret.",
     resave: true,
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: { 
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      httpOnly: true
+    }
   }));
 // Passport setup
 app.use(passport.initialize());
@@ -52,6 +56,11 @@ app.use(
         secret:"My secret key",
         saveUninitialized:true,
         resave:false,
+        cookie: { 
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          httpOnly: true
+        }
     })
 );
 
