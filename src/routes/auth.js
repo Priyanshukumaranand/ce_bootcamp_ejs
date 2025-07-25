@@ -13,7 +13,7 @@ const limiter = rateLimit({
 
 router.post('/signup', limiter, authController.signup);
 router.post('/login', limiter, authController.login);
-router.get('/logout', limiter, authController.logout);
+router.get('/logout', authController.logout);
 
 // routes/auth.js
 const sendPasswordResetEmail = require('../../utils/sendPasswordResetEmail');
