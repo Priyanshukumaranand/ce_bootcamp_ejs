@@ -87,12 +87,9 @@ exports.login = async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    res.cookie('jwt', token, { 
-      httpOnly: true, 
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000 
-    });
+    res.cookie('jwt', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+    // Set the token in a cookie
+    res.cookie('jwt', token, { httpOnly: true });
 
     res.redirect('/home');
   } catch (err) {
