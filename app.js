@@ -101,11 +101,7 @@ app.use('/', homeRoutes);
 app.use('/', societyRoutes);
 app.use('/', userRoutes);
 app.use("/", uploadRoutes);
-const otpLimiter = RateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 3, // limit each IP to 3 OTP requests per windowMs
-});
-app.post('/generate-otp', otpLimiter, generateOTP);
+app.post('/generate-otp', generateOTP);
 app.get('/forgetpassword', forgetPasswordController.getForgetPasswordPage);
 const forgetPasswordLimiter = RateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
