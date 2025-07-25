@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 const authController=require('../controllers/authController')
 const User=require('../models/user');
 const bcrypt=require('bcrypt');
+const { sanitizeInput, isValidToken } = require('../../utils/sanitizeInput');
 
 // Set up rate limiter: maximum of 100 requests per 15 minutes
 const limiter = rateLimit({
@@ -21,9 +22,21 @@ const sendPasswordResetEmail = require('../../utils/sendPasswordResetEmail');
 // Reset Password Route
 router.get('/reset-password/:token', (req, res) => {
     const { token } = req.params;
+    
+    // Validate and sanitize the token to prevent NoSQL injection
+    if (!isValidToken(token)) {
+      req.flash('error', 'Invalid reset password token.');
+      return res.redirect('/');
+    }
+    
+    const sanitizedToken = sanitizeInput(token);
+    if (!sanitizedToken) {
+      req.flash('error', 'Invalid reset password token.');
+      return res.redirect('/');
+    }
   
     // Find the user associated with the reset token
-    User.findOne({ passwordResetToken: token, passwordResetExpires: { $gt: Date.now() } })
+    User.findOne({ passwordResetToken: sanitizedToken, passwordResetExpires: { $gt: Date.now() } })
       .then((user) => {
         if (!user) {
           // If no user is found, display an error message
@@ -32,7 +45,7 @@ router.get('/reset-password/:token', (req, res) => {
         }
   
         // Render the reset password EJS template
-        res.render('reset-password', { token });
+        res.render('reset-password', { token: sanitizedToken });
       })
       .catch((err) => {
         console.error(err);
@@ -43,10 +56,20 @@ router.get('/reset-password/:token', (req, res) => {
 
   router.post('/reset-password', limiter, async (req, res) => {
     const { token, password } = req.body;
+    
+    // Validate and sanitize the token to prevent NoSQL injection
+    if (!isValidToken(token)) {
+      return res.redirect('/');
+    }
+    
+    const sanitizedToken = sanitizeInput(token);
+    if (!sanitizedToken) {
+      return res.redirect('/');
+    }
   
     try {
       // Find the user associated with the reset token
-      const user = await User.findOne({ passwordResetToken: token, passwordResetExpires: { $gt: Date.now() } });
+      const user = await User.findOne({ passwordResetToken: sanitizedToken, passwordResetExpires: { $gt: Date.now() } });
   
       if (!user) {
         // If no user is found, redirect to the login page
