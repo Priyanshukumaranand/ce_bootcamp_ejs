@@ -45,8 +45,13 @@ router.get('/reset-password/:token', (req, res) => {
     const { token, password } = req.body;
   
     try {
+      // Validate the token
+      if (typeof token !== 'string') {
+        return res.status(400).json({ error: 'Invalid token format.' });
+      }
+  
       // Find the user associated with the reset token
-      const user = await User.findOne({ passwordResetToken: token, passwordResetExpires: { $gt: Date.now() } });
+      const user = await User.findOne({ passwordResetToken: { $eq: token }, passwordResetExpires: { $gt: Date.now() } });
   
       if (!user) {
         // If no user is found, redirect to the login page
