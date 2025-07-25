@@ -41,7 +41,7 @@ router.get('/reset-password/:token', (req, res) => {
       });
   });
 
-  router.post('/reset-password', limiter, async (req, res) => {
+  router.post('/reset-password', async (req, res) => {
     const { token, password } = req.body;
   
     try {
