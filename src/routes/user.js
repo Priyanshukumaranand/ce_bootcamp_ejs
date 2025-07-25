@@ -32,7 +32,7 @@ function checkFileType(file, cb) {
   }
 }
 
-router.use('/uploads', express.static(path.resolve(process.cwd(), 'uploads')));
+router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 router.get('/form', jwtAuthMiddleware, async (req, res) => {
   try {
