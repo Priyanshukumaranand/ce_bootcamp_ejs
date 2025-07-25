@@ -5,7 +5,6 @@ const { jwtAuthMiddleware, generateToken } = require('../middleware/jwt');
 const multer = require('multer');
 const path = require('path');
 const fs=require('fs');
-const rateLimit = require('express-rate-limit');
 
 const storage = multer.diskStorage({
     destination: './uploads/',
@@ -60,13 +59,7 @@ router.get('/form', jwtAuthMiddleware, async (req, res) => {
 
 
 
-const updateProfileLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: { error: 'Too many requests, please try again later.' },
-});
-
-router.post('/update-profile', updateProfileLimiter, jwtAuthMiddleware, upload.single('profilePicture'), async (req, res) => {
+router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'), async (req, res) => {
     try {
       let email;
       if (req.user.email) {
