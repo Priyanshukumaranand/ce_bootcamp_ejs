@@ -89,14 +89,20 @@ router.post('/update-profile', jwtAuthMiddleware, upload.single('profilePicture'
       if (req.file) {
         user.img.data = fs.readFileSync(req.file.path);
         user.img.contentType = req.file.mimetype;
-        fs.unlink(req.file.path, (err) => {
-          if (err) {
-            console.log(err);
+        const resolvedPath = path.resolve(req.file.path);
+        const uploadDir = path.resolve('./uploads/');
+        if (resolvedPath.startsWith(uploadDir)) {
+          fs.unlink(resolvedPath, (err) => {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            console.log('File deleted successfully!');
             return;
-          }
-          console.log('File deleted successfully!');
-          return;
-        });
+          });
+        } else {
+          console.log('Invalid file path');
+        }
       }
   
       await user.save();
