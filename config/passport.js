@@ -26,36 +26,38 @@ passport.deserializeUser(async (user, done) => {
   }
 });
 
-// Google OAuth strategy
-passport.use(new GoogleStrategy({
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: process.env.CALLBACK_URL,
-  userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-  scope: ['profile', 'email']
-}, async (accessToken, refreshToken, profile, cb) => {
-  try {
-    const email = profile.emails[0].value;
-    const branchupgrade=['b222003@iiit-bh.ac.in'];
-    if (!email.endsWith('@iiit-bh.ac.in') || (!branchupgrade.includes(email) && !email.startsWith('b52')) ) {
-      return cb(null, false, { message: 'Invalid email domain' });
+// Google OAuth strategy - only configure if environment variables are available
+if (process.env.CLIENT_ID && process.env.CLIENT_SECRET && process.env.CALLBACK_URL) {
+  passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: process.env.CALLBACK_URL,
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+    scope: ['profile', 'email']
+  }, async (accessToken, refreshToken, profile, cb) => {
+    try {
+      const email = profile.emails[0].value;
+      const branchupgrade=['b222003@iiit-bh.ac.in'];
+      if (!email.endsWith('@iiit-bh.ac.in') || (!branchupgrade.includes(email) && !email.startsWith('b52')) ) {
+        return cb(null, false, { message: 'Invalid email domain' });
+      }
+
+      // Find or create the user
+      const result = await User.findOrCreate({ email });
+      const user = result.doc;
+
+      // Update user information
+      const updatedUser = await User.findOneAndUpdate(
+        { email }, // Filter to find the user
+        { googleId: profile.id, name: profile.displayName ,collegeId:email.substring(0, 7)}, // Data to update
+        { new: true } // Return the updated document
+      );
+
+      return cb(null, updatedUser);
+    } catch (err) {
+      return cb(err);
     }
-
-    // Find or create the user
-    const result = await User.findOrCreate({ email });
-    const user = result.doc;
-
-    // Update user information
-    const updatedUser = await User.findOneAndUpdate(
-      { email }, // Filter to find the user
-      { googleId: profile.id, name: profile.displayName ,collegeId:email.substring(0, 7)}, // Data to update
-      { new: true } // Return the updated document
-    );
-
-    return cb(null, updatedUser);
-  } catch (err) {
-    return cb(err);
-  }
-}));
+  }));
+}
 
 module.exports = passport;
