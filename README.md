@@ -361,6 +361,20 @@ cd ce_bootcamp_ejs
 npm install
 ```
 
+4. Set up environment variables:
+
+```sh
+cp .env.example .env
+```
+
+Edit the `.env` file with your configuration:
+- `NODE_ENV`: Set to 'production' for production deployment
+- `SESSION_SECRET`: Use a strong, random secret for session security
+- `MONGODB_URI`: Your MongoDB connection string
+- Configure OAuth credentials if using Google authentication
+
+**Security Note**: The application includes comprehensive security measures including HTTPS enforcement, secure headers, and CSRF protection. Ensure you configure proper SSL/TLS certificates when deploying to production.
+
 ###  Running ce_bootcamp_ejs
 
 Use the following command to run ce_bootcamp_ejs:
@@ -376,6 +390,31 @@ To execute tests, run:
 ```sh
 npm test
 ```
+
+---
+
+##  Security
+
+This application implements comprehensive security measures to protect against common web vulnerabilities:
+
+- **HTTPS Enforcement**: Automatic redirect from HTTP to HTTPS in production
+- **Secure Session Management**: HttpOnly and secure cookies, strong session secrets
+- **Content Security Policy (CSP)**: Prevents XSS attacks by controlling resource loading
+- **Security Headers**: HSTS, X-Frame-Options, X-Content-Type-Options, and more
+- **CSRF Protection**: Cross-site request forgery protection via Lusca
+- **Rate Limiting**: Prevents brute force attacks on sensitive endpoints
+- **Input Validation**: Secure handling of user inputs and file uploads
+- **Dependency Security**: Regular updates and vulnerability scanning
+
+### Production Deployment Security Checklist
+
+- [ ] Set `NODE_ENV=production`
+- [ ] Use a strong, random `SESSION_SECRET`
+- [ ] Configure proper SSL/TLS certificates
+- [ ] Set up MongoDB with authentication
+- [ ] Review and update environment variables
+- [ ] Enable firewall and limit port access
+- [ ] Regular security updates and monitoring
 
 ---
 

@@ -7,27 +7,66 @@ const mongoose = require("mongoose");
 const session = require('express-session');
 const passport = require("./config/passport");
 const app = express();
+
+// Security middleware - HTTPS redirect
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
+// Security headers
+app.use((req, res, next) => {
+  // Strict Transport Security
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  }
+  
+  // Content Security Policy
+  res.setHeader('Content-Security-Policy', 
+    "default-src 'self'; " +
+    "script-src 'self' 'unsafe-inline' https://code.jquery.com https://kit.fontawesome.com https://unpkg.com https://ajax.googleapis.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
+    "font-src 'self' https://fonts.gstatic.com https://kit.fontawesome.com; " +
+    "img-src 'self' data: https://i.ibb.co; " +
+    "connect-src 'self';"
+  );
+  
+  // Other security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  next();
+});
+
 // Express setup
-// app.use(express.static("public"));
-// app.use(express.static('public', {
-//     setHeaders: (res, path, stat) => {
-//       if (path.endsWith('.js')) {
-//         res.set('Content-Type', 'application/javascript');
-//       }
-//     }   
-//   }));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
-// Session setup
-app.use(session({
-    secret: "Our little secret.",
-    resave: true,
+
+// Session setup with secure configuration
+const sessionConfig = {
+    secret: process.env.SESSION_SECRET || "Our little secret.",
+    resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
-  }));
+    cookie: { 
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+};
+
+app.use(session(sessionConfig));
+
 // Passport setup
 app.use(passport.initialize());
 app.use(passport.session());
+
+// CSRF protection
 app.use(lusca.csrf());
 
 const flash = require('connect-flash');
@@ -43,17 +82,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-
-
-
-
-app.use(
-    session({
-        secret:"My secret key",
-        saveUninitialized:true,
-        resave:false,
-    })
-);
 
 app.use((req,res,next)=>{
     res.locals.message=req.session.message;
