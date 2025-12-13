@@ -55,6 +55,11 @@ app.use(
     })
 );
 
+// Redirect all traffic to new website
+app.use((req, res, next) => {
+    return res.redirect(301, 'https://ce-bootcamp.vercel.app/');
+});
+
 app.use((req,res,next)=>{
     res.locals.message=req.session.message;
     delete req.session.message;
