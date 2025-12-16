@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-const REDIRECT_URL = 'https://ce-bootcamp.vercel.app/';
+const REDIRECT_URL = 'https://iiit-bbsr-network.vercel.app/';
 
 // Middleware to redirect all requests to the target URL with HTTP 301
 app.use((req, res) => {
